@@ -1,0 +1,12 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block body %}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    {{ form_start(form, {'method': 'post', 'action': path('pickl_app_admin_user_add'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,305 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – Dashboard{% endblock %}
+
+{% block body %}
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul class="admin">
+            <li class="activAdmin"><a href="#">SUMMARY</a></li>
+            <li><a href="#projects">1. PROJECTS</a></li>
+            <li><a href="#users">2. USERS</a></li>
+            <li><a href="#ranks">3. RANKS</a></li>
+            <li><a href="#rewards">4. REWARDS</a></li>
+            <li><a href="#newsletter">5. NEWSLETTER</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop" class="adminimgtop">
+                <h1>Welcome to the back admin part!</h1>
+                <p>In this private section, you can manage user’s profile, their contents and chose what they
+                    display.</p>
+                <p>Here is a comprehensive list of the actions this part allows you to do:</p>
+                <p>
+                    => Add a user rank<br/>
+                    => Edit or delete a user rank<br/>
+                    => Promote or demote a user<br/>
+                    => Manage the rewards list<br/>
+                    => Edit the newsletter<br/>
+                </p>
+            </div>
+
+
+            <div id="projects" class="titleprofil">
+                <h2>1. PROJECTS</h2>
+                <div class="sep"></div>
+            </div>
+
+            <p class="dashNothing dashNothingExtend"><a href="{{ path('pickl_app_admin_project_add') }}">CREATE A NEW PROJECT</a></p>
+
+            {% if projects is not empty %}
+                <div class="tableprofil tableadmin">
+                    <table>
+                        <tr><td>TITLE</td><td>AUTHOR</td><td>STATEMENT</td><td>DATE</td><td>ACTIONS</td></tr>
+                        {% for project in projects  %}
+                            <tr>
+                                <td>
+                                    {% if project.published == true %}
+                                    <a href="{{ path('pickl_app_project_view', {'slug':project.slug}) }}">
+                                        {{ project.title }}
+                                    </a>
+                                    {% else %}
+                                        {{ project.title }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('pickl_app_user_view', {'username':project.user.username}) }}">
+                                        {{ project.user.username }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if project.finished %}
+                                        COMPLETED
+                                    {% elseif project.published %}
+                                        PUBLISHED - {{ project.remainingTime|upper }} LEFT
+                                    {% else %}
+                                        DRAFT
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ project.startingDate|date('d F') }}
+                                </td>
+                                <td>
+                                    {% if project.published == true %}
+                                        <a href="{{ path('pickl_app_news_add', {'slug': project.slug}) }}">
+                                        WRITE A NEWS
+                                        </a> /
+                                    {% endif %}
+                                    <a href="{{ path('pickl_app_admin_project_edit', {'slug': project.slug}) }}">
+                                        EDIT
+                                    </a> /
+                                    <a href="{{ path('pickl_app_admin_project_delete', {'slug': project.slug}) }}">
+                                        DELETE
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_admin_projects') }}">+</a></p></div>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No project yet</p>
+            {% endif %}
+
+            <div id="users" class="titleprofil">
+                <h2>2. USERS</h2>
+                <div class="sep"></div>
+            </div>
+
+            <p class="dashNothing dashNothingExtend"><a href="{{ path('pickl_app_admin_user_add') }}">CREATE A NEW USER</a></p>
+
+            {% if users is not empty %}
+                <div class="tableprofil tableadmin">
+                    <table>
+                        <tr><td>USERNAME</td><td>RANK</td><td>MAIL</td><td>REGISTRATION</td><td>ACTIONS</td></tr>
+                        {% for user in users  %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('pickl_app_user_view', {'username':user.username}) }}">
+                                        {{ user.username }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ user.rank.name }} - LVL.{{ user.level }}
+                                </td>
+                                <td>
+                                    {{ user.email }}
+                                </td>
+                                <td>
+                                    {{ user.registrationDate|date('d F') }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('pickl_app_admin_user_edit', {'username': user.username}) }}">
+                                        EDIT
+                                    </a>
+                                    {% if user.username != app.user.username %}
+                                        /
+                                    <a href="{{ path('pickl_app_admin_user_delete', {'username': user.username}) }}">
+                                        DELETE
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_admin_users') }}">+</a></p></div>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No user yet</p>
+            {% endif %}
+
+
+            <div id="ranks" class="titleprofil">
+                <h2>3. RANKS</h2>
+                <div class="sep"></div>
+            </div>
+
+            <p class="dashNothing dashNothingExtend"><a href="{{ path('pickl_app_admin_rank_add') }}">CREATE A NEW RANK</a></p>
+
+            {% if ranks is not empty %}
+                <div class="tableprofil">
+                    <table>
+                        <tr><td>ID</td><td>NAME</td><td>MIN LEVEL</td><td>ACTIONS</td></tr>
+                        {% for rank in ranks  %}
+                            <tr>
+                                <td>
+                                    #{{ rank.id }}
+                                </td>
+                                <td>
+                                    {{ rank.name }}
+                                </td>
+                                <td>
+                                    {{ rank.minLevel }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('pickl_app_admin_rank_edit', {'id':rank.id}) }}">EDIT</a> /
+                                    <a href="{{ path('pickl_app_admin_rank_delete', {'id':rank.id}) }}">DELETE</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_admin_ranks') }}">+</a></p></div>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No rank yet</p>
+            {% endif %}
+
+            <div id="rewards" class="titleprofil">
+                <h2>4. REWARDS</h2>
+                <div class="sep"></div>
+            </div>
+
+            <p class="dashNothing dashNothingExtend"><a href="{{ path('pickl_app_admin_rewards') }}">REWARDS LIST</a></p>
+
+            {% if rewards is not empty %}
+                <div class="tableprofil tablerewards">
+                    <table>
+                        <tr><td>ID</td><td>NAME</td><td>ICON</td></tr>
+                        {% for reward in rewards  %}
+                            <tr>
+                                <td>
+                                    #{{ reward.id }}
+                                </td>
+                                <td>
+                                    {{ reward.name }}
+                                </td>
+                                <td>
+                                    <p><img src="{{ asset(reward.icon.getRewardWebPath) }}" width="30" /></p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_admin_rewards') }}">+</a></p></div>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No reward yet</p>
+            {% endif %}
+
+
+            <div id="newsletter" class="titleprofil">
+                <h2>5. NEWSLETTER</h2>
+                <div class="sep"></div>
+            </div>
+
+            <div>
+                {% form_theme form 'PicklAppBundle:Form:fields.html.twig' %}
+
+                {{ form_start(form, {'attr':{'id':'formaddproject'}}) }}
+
+                {# Les erreurs générales du formulaire. #}
+                {{ form_errors(form) }}
+
+                <ul>
+                    <div class="sizeform">
+                        <li>
+                            <div style="position:relative;">
+                                {# Génération du label. #}
+                                <p>{{ form_label(form.subject, "Subject") }}</p>
+
+                                {% if not form.vars.valid %}
+                                    {{ form_errors(form.subject, {'attr': {'class':'formerrors'}}) }}
+                                {% else %}
+                                    <ul>
+                                        <li>Should be between 10 and 50 characters</li>
+                                    </ul>
+                                {% endif %}
+
+                                <div class="formdouble">
+                                    {# Génération de l'input. #}
+                                    {{ form_widget(form.subject, {'attr': {'class': 'longinput'}}) }}
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div style="position:relative;">
+                                {# Génération du label. #}
+                                <p>{{ form_label(form.message, "Message") }}</p>
+
+                                {# Affichage des erreurs pour ce champ précis. #}
+                                {% if not form.vars.valid %}
+                                    {{ form_errors(form.message) }}
+                                {% else %}
+                                    <ul>
+                                        <li>Should be between 50 and 1500 characters</li>
+                                    </ul>
+                                {% endif %}
+
+                                <div class="formdouble">
+                                    <div class="textCount" data="1500">0/1500</div>
+                                    {# Génération de l'input. #}
+
+                                    {{ form_widget(form.message, {'attr': {'class': 'largeinput', 'rows': '20', 'cols':'50'}}) }}
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div style="position:relative;">
+                                {# Génération du label. #}
+                                <p>It's okay?</p>
+
+                                <div class="formdouble">
+                                    <div id="submitNewsletterAdmin">Let's go!</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="height:100px;"></li>
+                    </div>
+                </ul>
+                <!-- fin du form -->
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ asset('js/formCounterparts.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#submitNewsletterAdmin').click(function(e){
+                e.preventDefault();
+                $('#formaddproject').submit();
+            });
+        });
+    </script>
+{% endblock %}

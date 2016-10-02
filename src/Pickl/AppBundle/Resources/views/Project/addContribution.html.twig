@@ -1,0 +1,85 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} – Support "{{ project.title }}"
+{% endblock %}
+
+{% block body %}
+
+<div id="content" class="supportcontent">
+    <div id="supportbackground">
+
+        <div class="articleparagraph">
+            <h1>{{ project.title|upper }}</h1>
+            <h2>#{{ project.category.name }}</h2>
+            <p>{{ project.smallDescription }}</p>
+        </div>
+
+
+        <div class="supportbloc">
+            <div class="supporttitle">
+                <h3>ENTER THE AMOUNT OF YOUR DONATION</h3>
+            </div>
+            <div class="supportamountcontainer">
+                {{ form_start(form, {'attr': {'id': 'formaddcontrib'}}) }}
+                {{ form_errors(form) }}
+
+                {{ form_label(form.amount) }}
+                {{ form_errors(form.amount, {'attr':{'class':'errorContrib'}}) }}
+                {{ form_widget(form.amount) }}
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        {% if project.counterparts is not empty %}
+            <div class="supportbloc">
+                <div class="supporttitle">
+                    <h3>GIFTS AVAILABLE</h3>
+                </div>
+            </div>
+        {% endif %}
+
+        {% for counterpart in project.counterparts %}
+            <div class="supportbloc">
+                <div class="supportsubtitle">
+                    <h3>FOR ${{ counterpart.minAmount }} OR MORE</h3>
+                </div>
+                <div class="supportsubject" data="1">
+                    <span>
+                        {{ counterpart.title }}
+                    </span>
+                    <p>{{ counterpart.description }}</p>
+                    <div class="floatMax">
+                        {% if (counterpart.maxCounterparts-counterpart.nbCounterparts) > 0 %}
+                            ONLY {{ (counterpart.maxCounterparts-counterpart.nbCounterparts) }} REMAINING
+                        {% else %}
+                            <span>SOLD OUT</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+            <a href="#">SUPPORT THIS PROJECT !</a>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#create a').click(function(e){
+                e.preventDefault();
+                $('#formaddcontrib').submit();
+            });
+        });
+    </script>
+{% endblock %}

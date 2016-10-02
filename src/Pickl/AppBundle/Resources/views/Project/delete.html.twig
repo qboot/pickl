@@ -1,0 +1,47 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ parent() }} – Delete {{ project.title }}?{% endblock %}
+
+{% block body %}
+
+    <div id="signupform">
+        <div id="signupcontain">
+            <h1>ARE YOU SURE? <br/>DELETE PROJECT : <span>{{ project.title|upper }}</span></h1>
+            <div class="sep"></div>
+            <form action="{{ path('pickl_app_project_delete', {'slug': project.slug}) }}" method="post">
+                <ul>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li style="margin-bottom: 10px !important;">
+                            <a class="signupvalid" href="{{ path('pickl_app_admin_projects') }}">
+                                NO I'M NOT
+                            </a>
+                        </li>
+                    {% else %}
+                        <li style="margin-bottom: 10px !important;">
+                            <a class="signupvalid" href="{{ path('pickl_app_my_projects') }}">
+                                NO I'M NOT
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li style="margin-bottom: 10px !important;">
+                        <input class="signupvalid" type="submit" value="YES I AM" />
+                    </li>
+                    {{ form_rest(form) }}
+                </ul>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+        <a href="{{ path('pickl_app_project_add') }}">CREATE YOUR OWN PROJECT !</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}Pickl{% endblock %}</title>
+
+        {% block stylesheets %}
+            {# On charge le CSS de bootstrap depuis le site directement #}
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        {% endblock %}
+    </head>
+
+<body>
+    <div class="container">
+        <div id="header" class="jumbotron">
+            <h1><a href="{{ path('pickl_app_homepage') }}">Pickl</a></h1>
+            <div>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    Connecté en tant que {{ app.user.username }}
+                    -
+                    <a href="{{ path('pickl_app_my_account') }}" alt="My account">My account</a>
+                    <a href="{{ path('pickl_app_user_logout') }}">Logout</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('pickl_app_admin') }}" alt="Dashboard">Dashboard</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ path('fos_user_security_login') }}">Login</a>
+                    <a href="{{ path('fos_user_registration_register') }}">Register</a>
+
+                    {{ render(controller(
+                    'PicklAppBundle:Login:getLogin'
+                    )) }}
+
+                {% endif %}
+            </div>
+            <div>
+                <form action="{{ path('pickl_app_search') }}" method="get">
+                    <input type="text" name="q" id="search" required />
+                    <input type="submit" value="Search" />
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="menu" class="col-md-3">
+                <h3>Navigation</h3>
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="#">Menu 1</a></li>
+                    <li><a href="#">Menu 2</a></li>
+                    <li><a href="#">Menu 3</a></li>
+                </ul>
+            </div>
+            <div id="content" class="col-md-9">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <hr/>
+
+        <footer>
+            <p>Pickl © {{ 'now'|date('Y') }}</p>
+        </footer>
+    </div>
+
+    {% block javascripts %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    {% endblock %}
+
+    </body>
+</html>

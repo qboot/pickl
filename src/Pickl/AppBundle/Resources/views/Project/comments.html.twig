@@ -1,0 +1,71 @@
+{% if is_granted("ROLE_USER") %}
+<div id="commentblock">
+    <div class="sizeform">
+        <dv class="titleprofil">
+            <h2 style="text-align:center;">Add a comment</h2>
+        </dv>
+        <div class="sep"></div>
+
+        {{ form_start(formComment, {'attr': {'class': 'form-horizontal', 'id': 'formaddproject'}}) }}
+
+        {{ form_errors(formComment) }}
+
+        <div class="form-group">
+            {{ form_errors(formComment.message) }}
+
+            <div class="col-sm-10">
+                {{ form_widget(formComment.message, {'attr': {'class': 'inputmehdi largeinput', 'rows': '10', 'cols': '50', 'placeholder': 'Type your comment here...'}}) }}
+            </div>
+        </div>
+        {{ form_rest(formComment) }}
+
+        {{ form_end(formComment) }}</div>
+
+    {% endif %}
+    <button id="postcom">
+        {% if comment is defined %}
+            <a href="#">EDIT THIS COMMENT !</a>
+        {% else %}
+            <a href="#">SEND THIS COMMENT !</a>
+        {% endif %}
+    </button>
+    <script>
+        $(document).ready(function() {
+            $('#postcom a').click(function(e){
+                e.preventDefault();
+                $('#formaddproject').submit();
+                $('#contentpage').load(slug + '/comments')
+            });
+        });
+    </script>
+</div>
+
+{% for comment in commentDate %}
+    <div class="articleparagraph">
+
+        <div class="commentcontent {% if comment.user == project.user%}commentcreator{% endif %}">
+            {% if comment.user == project.user%}
+                <img src="{{ asset('assets/img/star.png') }}" id="etoil" alt="etoile">
+            {% endif %}
+            <h3 style="margin-bottom:-10px;">Posted on {{ comment.date|date("F") }}, the {{ comment.date|date("jS") }} of {{ comment.date|date("Y") }}.</h3>
+            <h3>{{ comment.date|date("g") }}.{{ comment.date|date("i") }} {{ comment.date|date("A") }}</h3>
+            <p>{{ comment.message }}</p>
+            {% if app.user == comment.user or is_granted('ROLE_ADMIN') %}
+                <a href="{{ comment.project.slug }}/comment/{{ comment.id }}/edit"><span>Edit</span></a>
+                <a href="{{ comment.project.slug }}/comment/{{ comment.id }}/delete"><span>Delete</span></a>
+            {% endif %}
+        </div><!--
+           --><div class="commentprofil">
+            {%  if app.user.profilePicture is not empty %}
+                <div id="imgprofil"><img src="{{ app.user.profilePicture.getWebPath }}"/></div>
+            {% else %}
+                <div id="imgprofil"><img src="{{ asset('assets/img/defaultProfile.png') }}"/></div>
+            {% endif %}
+            <p>by <strong><a href="{{ path('pickl_app_user_view', {'username': comment.user.username} ) }}">{{ comment.user.username }}</a></strong><br>
+                {% if comment.user.country is null %}
+                {% else %}
+                    {{ comment.user.country }}
+                {% endif %}</p>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,668 @@
+<?php
+
+namespace Pickl\AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity(repositoryClass="Pickl\AppBundle\Repository\UserRepository")
+ * @ORM\Table(name="user")
+ *
+ */
+class User extends BaseUser
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registration_date", type="datetime")
+     */
+    protected $registrationDate;
+
+    /**
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @Assert\Length(min=3, minMessage="This value is too short. It should have {{ limit }}")
+     * @Assert\Length(max=30, maxMessage="This value is too long. It should have {{ limit }}")
+     * @Assert\Type(type="string", message="This value is should be a valid string")
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
+     * @Assert\Length(min=3, minMessage="This value is too short. It should have {{ limit }}")
+     * @Assert\Length(max=30, maxMessage="This value is too long. It should have {{ limit }}")
+     * @Assert\Type(type="string", message="This value is should be a valid string")
+     */
+    private $firstname;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Pickl\AppBundle\Entity\Image", cascade={"persist"})
+     */
+    private $profilePicture;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Pickl\AppBundle\Entity\Image", cascade={"persist"})
+     */
+    private $coverPicture;
+
+    /**
+     * @ORM\Column(name="small_description", type="string", length=255, nullable=true)
+     * @Assert\Length(max=255, maxMessage="This value is too long. It should have {{ limit }}")
+     * @Assert\Type(type="string", message="This value should be a valid string")
+     */
+    private $smallDescription;
+
+    /**
+     * @ORM\Column(name="big_description", type="text", nullable=true)
+     * @Assert\Length(max=500, maxMessage="This value is too long. It should have {{ limit }}")
+     * @Assert\Type(type="string", message="This value should be a valid string")
+     */
+    private $bigDescription;
+
+    /**
+     * @ORM\Column(name="experience", type="integer")
+     */
+    private $experience = 0;
+
+    /**
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     * @Assert\Country
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(name="facebook", type="string", length=255, nullable=true)
+     * @Assert\Url
+     */
+    private $facebook;
+
+    /**
+     * @ORM\Column(name="twitter", type="string", length=255, nullable=true)
+     * @Assert\Url
+     */
+    private $twitter;
+
+    /**
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
+     * @Assert\Url
+     */
+    private $website;
+
+    /**
+     * @ORM\Column(name="level", type="integer")
+     */
+    private $level;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Pickl\AppBundle\Entity\Rank", inversedBy="users", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $rank;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\UserReward", mappedBy="user", cascade={"persist", "remove"}, fetch="EAGER")
+     */
+    private $rewards;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Contribution", mappedBy="user", cascade={"remove"}, fetch="EAGER")
+     */
+    private $contributions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Comment", mappedBy="user", cascade={"remove"}, fetch="EAGER")
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Favorite", mappedBy="user", cascade={"remove"}, fetch="EAGER")
+     */
+    private $favorites;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Project", mappedBy="user", cascade={"remove"}, fetch="EAGER")
+     */
+    private $projects;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->rewards = new ArrayCollection();
+        $this->contributions = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
+        $this->projects = new ArrayCollection();
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set firstname
+     *
+     * @param string $firstname
+     *
+     * @return string
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set smallDescription
+     *
+     * @param string $smallDescription
+     *
+     * @return string
+     */
+    public function setSmallDescription($smallDescription)
+    {
+        $this->smallDescription = $smallDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get smallDescription
+     *
+     * @return string
+     */
+    public function getSmallDescription()
+    {
+        return $this->smallDescription;
+    }
+
+    /**
+     * Set bigDescription
+     *
+     * @param string $bigDescription
+     *
+     * @return string
+     */
+    public function setBigDescription($bigDescription)
+    {
+        $this->bigDescription = $bigDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get bigDescription
+     *
+     * @return string
+     */
+    public function getBigDescription()
+    {
+        return $this->bigDescription;
+    }
+
+    /**
+     * Set experience
+     *
+     * @param integer $experience
+     *
+     * @return int
+     */
+    public function setExperience($experience)
+    {
+        $this->experience = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Get experience
+     *
+     * @return int
+     */
+    public function getExperience()
+    {
+        return $this->experience;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return string
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set facebook
+     *
+     * @param string $facebook
+     *
+     * @return string
+     */
+    public function setFacebook($facebook)
+    {
+        $this->facebook = $facebook;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook
+     *
+     * @return string
+     */
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+    /**
+     * Set twitter
+     *
+     * @param string $twitter
+     *
+     * @return string
+     */
+    public function setTwitter($twitter)
+    {
+        $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    /**
+     * Get twitter
+     *
+     * @return string
+     */
+    public function getTwitter()
+    {
+        return $this->twitter;
+    }
+
+    /**
+     * Set website
+     *
+     * @param string $website
+     *
+     * @return string
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    /**
+     * Get website
+     *
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set profilePicture
+     *
+     * @param \Pickl\AppBundle\Entity\Image $profilePicture
+     *
+     * @return Image
+     */
+    public function setProfilePicture(Image $profilePicture = null)
+    {
+        $this->profilePicture = $profilePicture;
+
+        return $this;
+    }
+
+    /**
+     * Get profilePicture
+     *
+     * @return Image
+     */
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * Set coverPicture
+     *
+     * @param \Pickl\AppBundle\Entity\Image $coverPicture
+     *
+     * @return Image
+     */
+    public function setCoverPicture(Image $coverPicture = null)
+    {
+        $this->coverPicture = $coverPicture;
+
+        return $this;
+    }
+
+    /**
+     * Get coverPicture
+     *
+     * @return Image
+     */
+    public function getCoverPicture()
+    {
+        return $this->coverPicture;
+    }
+
+    /**
+     * Set rank
+     *
+     * @param \Pickl\AppBundle\Entity\Rank $rank
+     *
+     * @return Rank
+     */
+    public function setRank(Rank $rank)
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return Rank
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+
+    /**
+     * Add reward
+     *
+     * @param \Pickl\AppBundle\Entity\UserReward $reward
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function addReward(UserReward $reward)
+    {
+        if($this->hasReward($reward->getReward()->getId()))
+            return;
+
+        $this->rewards[] = $reward;
+
+        return $this;
+    }
+
+    public function hasReward($id)
+    {
+        if($this->rewards === null)
+            return false;
+
+        foreach($this->rewards as $userReward)
+        {
+            if($userReward->getReward()->getId() == $id)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove reward
+     *
+     * @param \Pickl\AppBundle\Entity\UserReward $reward
+     */
+    public function removeReward(UserReward $reward)
+    {
+        $this->rewards->removeElement($reward);
+    }
+
+    /**
+     * Get rewards
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRewards()
+    {
+        return $this->rewards;
+    }
+
+    /**
+     * Add contribution
+     *
+     * @param \Pickl\AppBundle\Entity\Contribution $contribution
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function addContribution(Contribution $contribution)
+    {
+        $this->contributions[] = $contribution;
+
+        return $this;
+    }
+
+    /**
+     * Remove contribution
+     *
+     * @param \Pickl\AppBundle\Entity\Contribution $contribution
+     */
+    public function removeContribution(Contribution $contribution)
+    {
+        $this->contributions->removeElement($contribution);
+    }
+
+    /**
+     * Get contributions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContributions()
+    {
+        return $this->contributions;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \Pickl\AppBundle\Entity\Comment $comment
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function addComment(Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \Pickl\AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add favorite
+     *
+     * @param \Pickl\AppBundle\Entity\Favorite $favorite
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function addFavorite(Favorite $favorite)
+    {
+        $this->favorites[] = $favorite;
+
+        return $this;
+    }
+
+    /**
+     * Remove favorite
+     *
+     * @param \Pickl\AppBundle\Entity\Favorite $favorite
+     */
+    public function removeFavorite(Favorite $favorite)
+    {
+        $this->favorites->removeElement($favorite);
+    }
+
+    /**
+     * Get favorites
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFavorites()
+    {
+        return $this->favorites;
+    }
+
+    /**
+     * Add project
+     *
+     * @param \Pickl\AppBundle\Entity\Project $project
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function addProject(Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \Pickl\AppBundle\Entity\Project $project
+     */
+    public function removeProject(Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * Set level
+     *
+     * @param integer $level
+     *
+     * @return User
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return integer
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * Set registrationDate
+     *
+     * @param \DateTime $registrationDate
+     *
+     * @return User
+     */
+    public function setRegistrationDate($registrationDate)
+    {
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get registrationDate
+     *
+     * @return \DateTime
+     */
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
+    }
+}

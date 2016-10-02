@@ -1,0 +1,102 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – My projects{% endblock %}
+
+{% block body %}
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul>
+            <li class="activ" ><a href="{{ path('pickl_app_my_account') }}">RETURN TO MY ACCOUNT</a></li>
+            <li><a href="#projects">MY PROJECTS</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop">
+                <h1>Welcome !</h1>
+                <p>
+                    Here, you can find most of the information concerning your activities on Pickl. From a short
+                    summary of your level and the amount of experience you got until now to the latest projects
+                    you added to your Likes passing by all your different projects and contributions to the other’s
+                    projects.
+                </p>
+                <p>
+                    From here, you can edit your profile as well, by putting more precise information about you
+                    and changing your profile and cover photo to make it more personal.
+                </p>
+            </div>
+
+            <div id="projects" class="titleprofil">
+                <h2>PROJECTS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if projects is not empty %}
+
+                {% for project in projects %}
+
+                    <div class="projectpreview">
+                        <div class="projectpreviewimg" style="background:url({{ asset(project.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                        </div>
+                        <div class="projectpreviewtxt">
+                            {% if project.published %}
+                                <h3><a href="{{ path('pickl_app_project_view', {'slug': project.slug}) }}" alt="{{ project.title }}">{{ project.title }}</a></h3>
+                            {% else %}
+                                <h3>{{ project.title }}</h3>
+                            {% endif %}
+                            <p>{{ project.bigDescription|slice(0,300) }}</p>
+                        </div>
+                        <div class="projectpreviewmodif">
+
+
+                            {% if project.finished == false %}
+                                <div>
+                                    <a href="{{ path('pickl_app_project_edit', {'slug': project.slug}) }}" alt="Edit - {{ project.title }}">EDIT</a>
+                                    {% if project.published == false %}
+                                        <a href="{{ path('pickl_app_project_delete', {'slug': project.slug}) }}" alt="Delete - {{ project.title }}">DELETE</a>
+                                    {% else %}
+                                        <a href="{{ path('pickl_app_news_add', {'slug': project.slug}) }}" alt="Write a news - {{ project.title }}">WRITE A NEWS</a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {% if project.finished %}
+                                <p class="statement">COMPLETED</p>
+                            {% elseif project.published %}
+                                <p class="statement">PUBLISHED - {{ project.remainingTime|upper }} LEFT</p>
+                            {% else %}
+                                <p class="statement">DRAFT</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="addInfosP">
+                            {{ project.favorites|length }} <img src="{{ asset('assets/icon/heart.png') }}"/> ///
+                            {{ project.contributions|length }} <img src="{{ asset('assets/icon/up.png') }}"/> ///
+                            {{ project.percent }}% - &dollar;{{ project.collectedAmount }}/&dollar;{{ project.requestedAmount }}
+                        </div>
+
+                    </div>
+
+                    <div class="separe"></div>
+                {% endfor %}
+
+                <div class="pagination">
+                    <ul>
+                        {% for p in range(1, nbPages) %}
+                            <li {% if p == page %} class="loadMoreActive" {% endif %}>
+                                <div class="loadmore"><a href="{{ path('pickl_app_my_projects', {'page':p}) }}">{{ p }}</a></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No project yet</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

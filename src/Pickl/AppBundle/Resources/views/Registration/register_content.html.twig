@@ -1,0 +1,53 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div id="signupform">
+    <div id="signupcontain">
+        <h1>CREATE YOUR ACCOUNT</h1>
+        <div class="sep"></div>
+        {% form_theme form 'PicklAppBundle:Form:fields.html.twig' %}
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+        {{ form_errors(form) }}
+            <ul>
+                <li>
+                    <div style="position: relative;">
+                        {% if not form.vars.valid %}
+                            {{ form_errors(form.username, {'attr': {'class':'formerrors'}}) }}
+                        {% endif %}
+
+                        {{ form_widget(form.username, {'attr': {'class': 'signupinput','placeholder':'Username'}}) }}
+                    </div>
+                </li>
+                <li>
+                    <div style="position: relative;">
+                        {% if not form.vars.valid %}
+                            {{ form_errors(form.plainPassword.first, {'attr': {'class':'formerrors'}}) }}
+                        {% endif %}
+
+                        {{ form_widget(form.plainPassword.first, {'attr': {'class': 'signupinput','placeholder':'Password'}}) }}
+                    </div>
+                </li>
+                <li>
+                    <div style="position: relative;">
+                        {% if not form.vars.valid %}
+                            {{ form_errors(form.plainPassword.second, {'attr': {'class':'formerrors'}}) }}
+                        {% endif %}
+
+                        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'signupinput','placeholder':'Confirm password'}}) }}
+                    </div>
+                </li>
+                <li>
+                    <div style="position: relative;">
+                        {% if not form.vars.valid %}
+                            {{ form_errors(form.email, {'attr': {'class':'formerrors'}}) }}
+                        {% endif %}
+
+                        {{ form_widget(form.email, {'attr': {'class': 'signupinput','placeholder':'eMail'}}) }}
+                    </div>
+                </li>
+                <li><input id="terms" type="checkbox" class="signupcheckform" required><label for="terms">I AGREE WITH THE TERMS</label></li>
+                <li><input type="submit" value="REGISTER" name="valider" class="signupvalid"></li>
+            </ul>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+</div>

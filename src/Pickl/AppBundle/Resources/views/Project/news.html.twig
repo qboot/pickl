@@ -1,0 +1,134 @@
+<div id="contentnews">
+    <div>
+        <div id="activity" class="titleprofil">
+            {% if news is defined %}
+                <h2 id="writenews">EDIT A NEWS</h2>
+            {% else %}
+                <h2 id="writenews">WRITE A NEWS</h2>
+            {% endif %}
+            <div class="sep"></div>
+        </div>
+
+        {#{% form_theme form 'PicklAppBundle:Form:fields.html.twig' %}#}
+
+        {{ form_start(form, {'attr': {'id': 'formaddproject', 'class': 'form-horizontal'}}) }}
+
+        {# Les erreurs générales du formulaire. #}
+        {{ form_errors(form) }}
+        <ul>
+            <div class="sizeform">
+                <li>
+                    <div style="position:relative;">
+                        {# Génération du label. #}
+                        <p>{{ form_label(form.title, "Title") }}</p>
+
+                        {% if not form.vars.valid %}
+                            {{ form_errors(form.title, {'attr': {'class':'formerrors'}}) }}
+                        {% else %}
+                            <ul>
+                                <li>Should be between 10 and 50 characters</li>
+                            </ul>
+                        {% endif %}
+
+                        <div class="formdouble">
+                            {# Génération de l'input. #}
+                            {{ form_widget(form.title, {'attr': {'class': 'longinput'}}) }}
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div style="position:relative;">
+                        {# Génération du label. #}
+                        <p>{{ form_label(form.message, "Message") }}</p>
+
+                        {# Affichage des erreurs pour ce champ précis. #}
+                        {% if not form.vars.valid %}
+                            {{ form_errors(form.message) }}
+                        {% else %}
+                            <ul>
+                                <li>Should be between 50 and 500 characters</li>
+                            </ul>
+                        {% endif %}
+
+                        <div class="formdouble">
+                            <div class="textCount" data="500">0/500</div>
+                            {# Génération de l'input. #}
+
+                            {{ form_widget(form.message, {'attr': {'class': 'largeinput', 'rows': '20', 'cols':'50'}}) }}
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div style="position:relative;">
+                        {# Génération du label. #}
+                        <p>{{ form_label(form.picture, "Picture") }}</p>
+
+                        {# Affichage des erreurs pour ce champ précis. #}
+                        {{ form_errors(form.picture) }}
+
+                        <div class="formdouble">
+                            {# Génération de l'input. #}
+
+                            {{ form_widget(form.picture) }}
+                        </div>
+                    </div>
+                </li>
+            </div>
+        </ul>
+        <!-- fin du form -->
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+
+    <button id="sendnews">
+        <a href="#">SEND THIS NEWS !</a>
+    </button>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<div class="sep"></div>
+{% for news in project.news %}
+    <div class="articleparagraph">
+        <h3>Published on {{ news.date.date|date("l") }},
+            {{ news.date.date|date("F") }} {{ news.date.date|date("jS") }}
+            {{ news.date.date|date("Y") }}</h3>
+        <h4>{{ news.title }}</h4>
+        <img class="imgparagraph" src="{{ asset('')~news.picture.getWebPath }}"/>
+        <div class="comment"><p>Image comment</p></div>
+        <p>{{ news.message }}</p>
+        {% if news.updateAt is not null %}
+            Last update : {{ news.updateAt.date|date("l") }},
+            {{ news.updateAt.date|date("F") }} {{ news.updateAt.date|date("jS") }}
+            {{ news.updateAt.date|date("Y") }} - {{ news.updateAt.date|date("g") }}.{{ news.updateAt.date|date("i") }}  {{ news.updateAt.date|date("A") }}
+            <br><br>
+        {% endif %}
+
+        {% if app.user == news.project.user or is_granted('ROLE_ADMIN') %}
+            <a href="{{ news.project.slug }}/news/{{ news.id }}/edit"><button id="edit" class="deledit">Edit news</button></a>
+            <a href="{{ news.project.slug }}/news/{{ news.id }}/delete"><button id="delete" class="deledit">Delete news</button></a>
+
+            <form id="deletetrue" hidden action="{{ path('pickl_app_news_delete', {'slug': news.project.slug,'id': news.id}) }}" method="post">
+                <input hidden type="submit" value="Delete" class="btn btn-danger" />
+                {# Ceci va générer le champ CSRF #}
+                {{ form_rest(form) }}
+            </form>
+
+        {% endif %}
+    </div>
+    <div class="sep"></div>
+{% endfor %}
+<script>
+    $(document).ready(function() {
+        $('#sendnews a').click(function(e){
+            e.preventDefault();
+            $('#formaddproject').submit();
+            $('')
+        });
+    });
+</script>

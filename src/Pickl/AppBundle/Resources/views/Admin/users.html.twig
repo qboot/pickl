@@ -1,0 +1,143 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – All users{% endblock %}
+
+{% block body %}
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul class="admin">
+            <li class="activAdmin"><a href="{{ path('pickl_app_admin') }}">RETURN TO DASHBOARD</a></li>
+            <li><a href="#admins">ADMINS</a></li>
+            <li><a href="#users">USERS</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop" class="adminimgtop">
+                <h1>Welcome to the back admin part!</h1>
+                <p>In this private section, you can manage user’s profile, their contents and chose what they
+                    display.</p>
+                <p>Here is a comprehensive list of the actions this part allows you to do:</p>
+                <p>
+                    => Add a user rank<br/>
+                    => Edit or delete a user rank<br/>
+                    => Promote or demote a user<br/>
+                    => Manage the rewards list<br/>
+                    => Edit the newsletter<br/>
+                </p>
+            </div>
+
+            <div id="admins" class="titleprofil">
+                <h2>ADMINS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if admins is not empty %}
+                <div class="tableprofil tableadmin">
+                    <table>
+                        <tr><td>USERNAME</td><td>RANK</td><td>MAIL</td><td>REGISTRATION</td><td>ACTIONS</td></tr>
+                        {% for admin in admins  %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('pickl_app_user_view', {'username':admin.username}) }}">
+                                        {{ admin.username }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ admin.rank.name }} - LVL.{{ admin.level }}
+                                </td>
+                                <td>
+                                    {{ admin.email }}
+                                </td>
+                                <td>
+                                    {{ admin.registrationDate|date('d F') }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('pickl_app_admin_user_edit', {'username': admin.username}) }}">
+                                        EDIT
+                                    </a>
+                                    {% if admin.username != app.user.username %}
+                                        /
+                                        <a href="{{ path('pickl_app_admin_user_delete', {'username': admin.username}) }}">
+                                            DELETE
+                                        </a>
+                                        /
+                                        <a href="{{ path('pickl_app_admin_demote', {'username': admin.username}) }}">
+                                            DEMOTE
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No admin yet</p>
+            {% endif %}
+
+
+            <div id="users" class="titleprofil">
+                <h2>USERS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if users is not empty %}
+                <div class="tableprofil tableadmin">
+                    <table>
+                        <tr><td>USERNAME</td><td>RANK</td><td>MAIL</td><td>REGISTRATION</td><td>ACTIONS</td></tr>
+                        {% for user in users  %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('pickl_app_user_view', {'username':user.username}) }}">
+                                        {{ user.username }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ user.rank.name }} - LVL.{{ user.level }}
+                                </td>
+                                <td>
+                                    {{ user.email }}
+                                </td>
+                                <td>
+                                    {{ user.registrationDate|date('d F') }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('pickl_app_admin_user_edit', {'username': user.username}) }}">
+                                        EDIT
+                                    </a> /
+                                    <a href="{{ path('pickl_app_admin_user_delete', {'username': user.username}) }}">
+                                        DELETE
+                                    </a> /
+                                    <a href="{{ path('pickl_app_admin_promote', {'username': user.username}) }}">
+                                        PROMOTE
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    <div class="pagination">
+                        <ul>
+                            {% for p in range(1, nbPages) %}
+                                <li {% if p == page %} class="loadMoreActive" {% endif %}>
+                                    <div class="loadmore"><p><a href="{{ path('pickl_app_admin_users', {'page':p}) }}">{{ p }}</a></p></div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No user yet</p>
+            {% endif %}
+
+
+        </div>
+    </div>
+{% endblock %}

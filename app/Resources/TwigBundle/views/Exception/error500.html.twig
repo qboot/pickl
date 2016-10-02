@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Error 500 - Pickl</title>
+
+
+    <style>
+        html, body {
+            width:100%;
+            height:100%;
+            overflow:hidden;
+            font-family:Roboto, sans-serif;
+        }
+
+        .wrap {
+            width:960px;
+            max-width:90%;
+            margin-left:auto;
+            margin-right:auto;
+            text-align:center;
+        }
+
+        .error404 {
+            font-size:250px;
+            color:rgb(116,214,136);
+        }
+
+        .error404message {
+            font-size:35px;
+            text-transform:uppercase;
+            color:rgb(21,22,23);
+        }
+
+        .error404trait {
+            width:75%;
+            height:2px;
+            margin-top:40px;
+            margin-bottom:40px;
+            background-color:rgb(240,240,240);
+            margin-left:auto;
+            margin-right:auto;
+        }
+
+        .error404link {
+            color:white;
+            width:40%;
+            height:50px;
+            line-height:50px;
+            text-transform:uppercase;
+            background-color:rgb(116,234,136);
+            display:block;
+            text-decoration:none;
+            margin-left:auto;
+            margin-right:auto;
+            font-size:22px;
+        }
+
+        .error404link:hover {
+            background-color:rgb(131,249,141);
+        }
+
+        #error404search {
+            margin-top:40px;
+            position:relative;
+        }
+
+        .error404search {
+        }
+
+        #error404input {
+            width:600px;
+            max-width: 95%;
+            height:50px;
+            border:2px solid rgb(225,225,225);
+            padding-left:30px;
+            outline:none;
+            font-size:18px;
+        }
+
+        #error404input:focus, #error404input:hover {
+            outline: 1px solid rgb(116,234,136);
+        }
+
+        .error404button {
+            position:absolute;
+            cursor:pointer;
+            height:50px;
+            width:50px;
+            margin-left:10px;
+            background: url('{{ asset('assets/img/search_nb.png') }}') no-repeat center center;
+            background-size:100%;
+            right:75px;
+            top:0;
+        }
+
+        .logo {
+            margin-top:40px;
+            width: 100px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="wrap">
+    <div class="error404">500</div>
+
+    <div class="error404message">Are you trying to access something forbidden ?</div>
+
+    <div class="error404trait"></div>
+
+    <a class="error404link" href="{{ path('pickl_app_explore') }}">Explore amazing projects</a>
+
+
+    <div id="error404search">
+        <form class="error404search" action="{{ path('pickl_app_search') }}" method="get">
+            <input type="text" name="q" id="error404input" placeholder="Search" required />
+            <div class="error404button"></div>
+        </form>
+    </div>
+
+    <img class="logo" src="{{ asset('assets/img/logo.png') }}" />
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+    $('.error404button').click(function(){
+       $('.error404search').submit();
+    });
+</script>
+
+</body>
+</html>

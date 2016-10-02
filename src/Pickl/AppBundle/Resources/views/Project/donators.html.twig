@@ -1,0 +1,19 @@
+
+<div class="donatorsblock">
+    <h4>WHO DONATED ?</h4>
+
+    <div class="sep"></div>
+    {% set total = 0 %}
+    <div id="totaldonator">
+        {% for donator in contributors %}
+            <p>{% if donator.username == project.user.username %}-->{% endif %}
+                {{ donator.username }} gave
+                {% for giver in donator.contributions %}
+                    {% set total = total + giver.amount %}
+                {% endfor %}{{ total }} dollars to {{ project.title }}.
+                He participate at about {{ (total*100)/project.requestedAmount }}% of the amount requested
+                by {{ project.user.username }}.</p><br/>
+        {% endfor %}
+    </div>
+</div>
+</div>

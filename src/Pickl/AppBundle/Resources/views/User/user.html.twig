@@ -1,0 +1,130 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}
+    {% if is_granted('ROLE_USER') %}
+        {% if app.user.username == user.username %}
+            {{ parent() }} – My profile
+        {% else %}
+            {{ parent() }} – {{ user.username }}'s profile
+        {% endif %}
+    {% else %}
+        {{ parent() }} – {{ user.username }}'s profile
+    {% endif %}
+{% endblock %}
+{% block topproject %}
+
+    <div id="topuser" class="top">
+        <div class="containtoptitle" style="background:url({{ asset(user.coverPicture.getWebPath) }}) no-repeat center fixed;background-size: cover;">
+            <div id="usercontent">
+                <div id="usercontenttxt">
+                    <div id="usercontentimg">
+                        <div class="userpic"></div>
+                        <div id="userrank">
+                            <p>{{ user.level }}</p>
+                            <img src="{{ asset('assets/icon/badge.png') }}"/>
+                        </div>
+                    </div>
+
+                    <div id="centeruser">
+                        <div class="photoprofilgrand" style="background:url({{ asset(user.profilePicture.getWebPath) }}) no-repeat center;background-size: cover;"></div>
+                        <h1>
+                            {% if user.name is not empty and user.firstname is not empty %}
+                                {{ user.firstname }} {{ user.name }}
+                            {% elseif user.name is empty and user.firstname is empty %}
+                                {{ user.username }}
+                            {% elseif user.name is not empty and user.firstname is empty %}
+                                {{ user.username }} [{{ user.name }}]
+                            {% elseif user.name is empty and user.firstname is not empty %}
+                                {{ user.username }} [{{ user.firstname }}]
+                            {% endif %}
+                        </h1><br>
+                        <p id="cntp" style="top:111px;left:auto !important; right:75px;"><img src="{{ asset('assets/icon/location.png') }}" width="20px"/>
+                            {% if user.country is empty %}
+                                No country
+                            {% else %}
+                                {{ user.country }}
+                            {% endif %}</p>
+                        <div class="goalbar" id="goaluser"><div class="goalbarload" style="
+                                    width:{{ percent }};max-width:100%;"></div></div>
+                        <p id="iksp" style="right: 75px; text-align: right; bottom: 170px; top: auto !important;">{{ user.experience }} xp</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="contenttitle">
+        {% if is_granted('ROLE_USER') %}
+            {% if app.user == user %}
+                <a href="{{ path('pickl_app_user_edit') }}">
+                    <h1>EDIT MY PROFILE</h1>
+                </a>
+            {% else %}
+                <a href="{{ path('pickl_app_homepage') }}">
+                    <h1>LEAVE THIS PROFILE</h1>
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{{ path('pickl_app_homepage') }}">
+                <h1>LEAVE THIS PROFILE</h1>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="trend">
+        <h2>PROFILE OF {{ user.username|upper }}</h2>
+        <div class="sep"></div>
+        <p class="azer" style="font-style: normal;color:rgb(116,234,136); margin-bottom: 25px; font-size:20px;"><span style="color:rgb(21,22,23)">RANK /</span> {{ user.rank.name }}</p>
+        <p class="azer">{{ user.email }}</p>
+    </div>
+
+    {% if user.rewards is not empty %}
+        <div id="logocontainer">
+            {% for reward in user.rewards %}
+                <div class="logosolo">
+                    <img src="{{ asset(reward.reward.icon.rewardWebPath) }}"/>
+                    <p>{{ reward.reward.name }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p class="dashNothing">This user has no reward yet</p>
+    {% endif %}
+
+    <div class="trend">
+        <h2>DESCRIPTION</h2>
+        <div class="sep"></div>
+        {% if user.smallDescription is not empty %}
+            <p style="font-style: italic;font-size:26px;font-family: Roboto,sans-serif;">{{ user.smallDescription }}</p>
+        {% endif %}
+
+        {% if user.bigDescription is not empty %}
+            <p style="color:rgb(100,100,100); font-style: italic;font-size:18px;font-family: Roboto,sans-serif;margin-top: 25px;line-height: 25px;">{{ user.bigDescription }}</p>
+        {% endif %}
+
+        {% if user.bigDescription is empty and user.smallDescription is empty %}
+            <p class="azer">No description yet</p>
+        {% endif %}
+    </div>
+
+    <div class="trend">
+        <h2>SOCIAL LINKS</h2>
+        <div class="sep"></div>
+        {% if user.website is not empty %}
+            <a href="{{ user.website }}" class="azer" style="text-transform: lowercase;font-style:normal;color:rgb(116,234,136);">{{ user.website }}</a><br/>
+        {% endif %}
+        {% if user.twitter is not empty %}
+            <a href="{{ user.twitter }}" class="azer" style="text-transform: lowercase;font-style:normal;color:rgb(116,234,136);">{{ user.twitter }}</a><br/>
+        {% endif %}
+        {% if user.facebook is not empty %}
+            <a href="{{ user.facebook }}" class="azer" style="text-transform: lowercase;font-style:normal;color:rgb(116,234,136);">{{ user.facebook }}</a><br/>
+        {% endif %}
+    </div>
+
+{% endblock %}
+{% block sponsors %}
+{% endblock %}

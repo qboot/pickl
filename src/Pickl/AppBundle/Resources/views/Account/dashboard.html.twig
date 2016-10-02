@@ -1,0 +1,245 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – My account{% endblock %}
+
+{% block body %}
+
+    <div id="navtwo">
+        <div id="navprofil">
+                <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul>
+            <li class="activ" ><a href="#">SUMMARY</a></li>
+            <li><a href="#activity">1. ACTIVITY</a></li>
+            <li><a href="#projects">2. MY PROJECTS</a></li>
+            <li><a href="#contributions">3. MY CONTRIBUTIONS</a></li>
+            <li><a href="#likes">4. MY LIKES</a></li>
+            <li><a href="#comments">5. MY COMMENTS</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop">
+                <h1>Welcome !</h1>
+                <p>
+                    Here, you can find most of the information concerning your activities on Pickl. From a short
+                    summary of your level and the amount of experience you got until now to the latest projects
+                    you added to your Likes passing by all your different projects and contributions to the other’s
+                    projects.
+                </p>
+                <p>
+                    From here, you can edit your profile as well, by putting more precise information about you
+                    and changing your profile and cover photo to make it more personal.
+                </p>
+            </div>
+            <div id="activity" class="titleprofil">
+                <h2>1. ACTIVITY</h2>
+                <div class="sep"></div>
+            </div>
+            <div id="goalbarcontainer">
+                <p>YOUR EXPERIENCE<br><strong>{{ app.user.experience }} XP</strong></p>
+
+                <div class="projectgoalbar">
+                    <div class="level">{{ app.user.level }}</div>
+                    <img src="{{ asset('assets/icon/badge.png') }}"/>
+                    <div class="goalbarload" style="width:{{ percentage }}%"></div>
+                    <div class="percentBarDash">{{ percentage }}%</div>
+                </div>
+            </div>
+
+            <div class="tabprofil">
+                <div class="titletabprofil">
+                    <h3>ACTIVITY</h3>
+                </div>
+
+
+
+                {% if activities is not empty %}
+                    <ul>
+                        {% for activity in activities %}
+                            {% if activity.class == "Comment" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/comments.png') }}"/>
+                                    </div>
+                                    <p>You have sent comment "{{ activity.activity.message|slice(0,25) }}..." in project <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.project.slug}) }}">{{ activity.activity.project.title }}</a></p>
+                                    <p class="dateFloat">{{ activity.activity.date|date('d F, H:i') }}</p>
+                                </li>
+                            {% elseif activity.class == "Contribution" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/up.png') }}"/>
+                                    </div>
+                                    <p>You have donated ${{ activity.activity.amount }} to project <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.project.slug}) }}">{{ activity.activity.project.title }}</a></p>
+                                    <p class="dateFloat">{{ activity.activity.date|date('d F, H:i') }}</p>
+                                </li>
+                            {% elseif activity.class == "Project" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/liked.png') }}"/>
+                                    </div>
+                                    {% if activity.activity.published == true %}
+                                        <p>You have created project <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.slug}) }}">{{ activity.activity.title }}</a></p>
+                                    {% else %}
+                                        <p>You have created project {{ activity.activity.title }}. <a class="linkFloatGreen"  href="{{ path('pickl_app_project_edit', {'slug': activity.activity.slug}) }}">Publish it now ?</a></p>
+                                    {% endif %}
+                                    <p class="dateFloat">{{ activity.activity.startingDate|date('d F, H:i') }}</p>
+                                </li>
+                            {% elseif activity.class == "Favorite" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/heart.png') }}"/>
+                                    </div>
+                                    <p>You have liked <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.project.slug}) }}">{{ activity.activity.project.title }}</a></p>
+                                    <p class="dateFloat">{{ activity.activity.date|date('d F, H:i') }}</p>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul>
+                        <li class="noActivity">No activity... Come back later ;)<li>
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="loadmorenews"><p><a href="{{ path('pickl_app_my_activity') }}">+</a></p></div>
+
+            <div id="projects" class="titleprofil">
+                <h2>2. PROJECTS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if projects is not empty %}
+
+                {% for project in projects %}
+
+                    <div class="projectpreview">
+                        <div class="projectpreviewimg" style="background:url({{ asset(project.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                        </div>
+                        <div class="projectpreviewtxt">
+                            {% if project.published %}
+                                <h3><a href="{{ path('pickl_app_project_view', {'slug': project.slug}) }}" alt="{{ project.title }}">{{ project.title }}</a></h3>
+                            {% else %}
+                                <h3>{{ project.title }}</h3>
+                            {% endif %}
+                            <p>{{ project.bigDescription|slice(0,300) }}</p>
+                        </div>
+                        <div class="projectpreviewmodif">
+
+
+                            {% if project.finished == false %}
+                                <div>
+                                    <a href="{{ path('pickl_app_project_edit', {'slug': project.slug}) }}" alt="Edit - {{ project.title }}">EDIT</a>
+                                    {% if project.published == false %}
+                                        <a href="{{ path('pickl_app_project_delete', {'slug': project.slug}) }}" alt="Delete - {{ project.title }}">DELETE</a>
+                                    {% else %}
+                                        <a href="{{ path('pickl_app_news_add', {'slug': project.slug}) }}" alt="Write a news - {{ project.title }}">WRITE A NEWS</a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {% if project.finished %}
+                                <p class="statement">COMPLETED</p>
+                            {% elseif project.published %}
+                                <p class="statement">PUBLISHED - {{ project.remainingTime }} left</p>
+                            {% else %}
+                                <p class="statement">DRAFT</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="addInfosP">
+                            {{ project.favorites|length }} <img src="{{ asset('assets/icon/heart.png') }}"/> ///
+                            {{ project.contributions|length }} <img src="{{ asset('assets/icon/up.png') }}"/> ///
+                            {{ project.percent }}% - &dollar;{{ project.collectedAmount }}/&dollar;{{ project.requestedAmount }}
+                        </div>
+
+                    </div>
+
+                    <div class="separe"></div>
+
+                {% endfor %}
+
+            {% else %}
+                <p class="dashNothing">No project yet</p>
+            {% endif %}
+
+
+            <div class="loadmorenews"><p><a href="{{ path('pickl_app_my_projects') }}">+</a></p></div>
+
+
+            <div id="contributions" class="titleprofil">
+                <h2>3. CONTRIBUTIONS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if contributions is not empty %}
+
+                <div class="tableprofil">
+                    <table>
+                        <tr><td>DATE</td><td>PROJECT</td><td>AMOUNT</td><td>CONTRIBUTED</td></tr>
+                        {% for contribution in contributions %}
+                            <tr><td>{{ contribution.date|date('d F') }}</td><td><a href="{{ path('pickl_app_project_view', {'slug':contribution.project.slug}) }}">{{ contribution.project.title }}</a></td><td>&dollar;{{ contribution.amount }}</td><td><img src="{{ asset('assets/icon/up.png') }}"/></td></tr>
+                        {% endfor %}
+                    </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_my_contributions') }}">+</a></p></div>
+                </div>
+            {% else %}
+                <p class="dashNothing">No contribution yet</p>
+            {% endif %}
+
+
+
+
+            <div id="likes" class="titleprofil">
+                <h2>4. LIKES</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if likes is not empty %}
+                <div class="tableprofil">
+                <table>
+                    <tr><td>DATE</td><td>PROJECT</td><td>ACTION</td><td>LIKED</td></tr>
+                        {% for like in likes %}
+                            <tr><td>{{ like.date|date('d F') }}</td><td><a href="{{ path('pickl_app_project_view', {'slug':like.project.slug}) }}">{{ like.project.title }}</a></td><td><a href="{{ path('pickl_app_project_add_like', {'slug': like.project.slug,'dashboard':'true'}) }}">REMOVE</a></td><td><img src="{{ asset('assets/icon/heart.png') }}" /></td></tr>
+                        {% endfor %}
+                </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_my_likes') }}">+</a></p></div>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No like yet</p>
+            {% endif %}
+
+
+
+
+
+
+
+            <div id="comments" class="titleprofil">
+                <h2>5. COMMENTS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if comments is not empty %}
+                <div class="tableprofil">
+                    <table>
+                        <tr><td>DATE</td><td>PROJECT</td><td>ACTIONS</td><td>COMMENTED</td></tr>
+                        {% for comment in comments %}
+                            <tr><td>{{ comment.date|date('d F') }}</td><td><a href="{{ path('pickl_app_project_view', {'slug':comment.project.slug}) }}">{{ comment.project.title }}</a></td><td>
+                                    <p><a href="{{ path('pickl_app_comment_edit', {'slug':comment.project.slug,'id':comment.id}) }}">Edit</a> /
+                                    <a href="{{ path('pickl_app_comment_delete', {'slug':comment.project.slug,'id':comment.id}) }}">Delete</a></p>
+                                </td><td><img src="{{ asset('assets/icon/comments.png') }}" /></td></tr>
+                        {% endfor %}
+                    </table>
+                    <div class="loadmorenews"><p><a href="{{ path('pickl_app_my_comments') }}">+</a></p></div>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No comment yet</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

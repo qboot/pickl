@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Pickl{% endblock %}</title>
+            {# On charge le CSS de bootstrap depuis le site directement #}
+            <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/override.css') }}" />
+            <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+    </head>
+<body>
+    <nav>
+        <div id="logo"><a href="{{ path('pickl_app_homepage') }}"><img src="{{ asset('assets/img/logo.png') }}"/></a></div>
+        <ul class="animnav">
+            <li><a href="{{ path('pickl_app_explore') }}">Explore</a></li>
+            <li><a href="{{ path('pickl_app_how_it_works') }}">How it works</a></li>
+            <li id="campaignstart"><a href="{{ path('pickl_app_project_add') }}">Start a campaign</a></li>
+            <div id="search"><img class="buttonSearch" src="{{ asset('assets/img/search.png') }}"/>
+                <form class="formSearch" action="{{ path('pickl_app_search') }}" method="get">
+                    <input type="text" name="q" id="inputSearch" placeholder="Search" required />
+                    <input type="submit" class="submitSearch" value="Search" />
+                </form>
+            </div>
+        </ul>
+
+
+
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <ul id="rightnav" class="animnav">
+                    <li>Connecté en tant que {{ app.user.username }}</li>
+                    <li><a href="{{ path('pickl_app_my_account') }}" alt="My account">My account</a></li>
+                    <li><a href="{{ path('pickl_app_user_logout') }}">Logout</a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('pickl_app_admin') }}" alt="Dashboard">Dashboard</a></li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <ul id="rightnav" class="animnav">
+                    <li><a href="{{ path('fos_user_registration_register') }}">Sign Up</a></li>
+                    <li><a href="login">Log In</a></li>
+                </ul>
+
+                <div id="login">
+                    {{ render(controller(
+                    'PicklAppBundle:Login:getLogin'
+                    )) }}
+                </div>
+            {% endif %}
+
+
+
+
+
+
+
+
+        <div id="navrank">
+            <div class="rankbuttons" id="reward"><a href="reward.php"><img src="{{ asset('assets/img/reward.png') }}"/></a></div>
+            <div class="rankbuttons" id="statistics"><a href="statistics.php"><img src="{{ asset('assets/img/statistics.png') }}"/></a></div>
+        </div>
+    </nav>
+    {% for message in app.session.flashbag.get('info') %}
+        <div class="messageFlash">{{ message }}</div>
+    {% endfor %}
+    {% block topproject %}
+    {% endblock %}
+    <div class="content">
+        {% block body %}
+        {% endblock %}
+        {% block sponsors %}
+            <div id="sponsorscontent">
+                <div id="sponsors">
+                    <h2>SPONSORS</h2>
+
+                    <div class="sponsor"><a href="http://www.nike.com/" target="_blank"><img src="{{ asset('assets/img/sponsor1.png') }}"/></a></div>
+                    <div class="sponsor"><a href="http://www.canon.fr/" target="_blank"><img src="{{ asset('assets/img/sponsor2.png') }}"/></a></div>
+                    <div class="sponsor"><a href="http://www.lemonde.fr/" target="_blank"><img src="{{ asset('assets/img/sponsor3.png') }}"/></a></div>
+                    <div class="sponsor"><a href="http://www.estac.fr/" target="_blank"><img src="{{ asset('assets/img/sponsor4.png') }}"/></a></div>
+                    <div class="sponsor"><a href="http://www.kelloggs.fr/" target="_blank"><img src="{{ asset('assets/img/sponsor5.png') }}"/></a></div>
+
+                </div>
+            </div>
+
+            <div id="create">
+                <a href="{{ path('pickl_app_project_add') }}">CREATE YOUR OWN PROJECT !</a>
+            </div>
+        {% endblock %}
+        {% block footer %}
+            <footer>
+                <div id="footercontainer">
+                    <div class="linkfooter">
+                        <a href="{{ path('pickl_app_faq') }}">FAQ</a><br>
+                        <a href="{{ path('pickl_app_about') }}">ABOUT</a><br>
+                        <a href="{{ path('pickl_app_rewards') }}">REWARDS</a><br>
+                        <a href="{{ path('pickl_app_ranking') }}">RANKING</a>
+                    </div>
+                    <div class="linkfooter">
+                        <a href="{{ path('pickl_app_how_it_works') }}">HOW IT WORKS</a><br>
+                        <a href="{{ path('pickl_app_project_add') }}">START A PROJECT</a><br>
+                        <a href="{{ path('pickl_app_explore') }}">EXPLORE</a><br>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <a href="{{ path('pickl_app_my_account') }}">MY ACCOUNT</a>
+                        {% endif %}
+                    </div>
+                    <div id="socialfooter">
+                        <h4>Subscribe to the newsletter</h4>
+                        <form>
+                            <input id="subfooter" type="text" placeholder="Mail...">
+                            <input id="subvalid" type="submit" name="Subscribe" value="Subscribe">
+                        </form>
+                        <div id="socialcontainer">
+                            <h4>Follow us</h4>
+                            <div id="socialbutton">
+                                <a href="http://facebook.com"><img src="{{ asset('assets/img/fb.png') }}"/></a>
+                                <a href="http://twitter.com"><img src="{{ asset('assets/img/twitter.png') }}"/></a>
+                                <a href="http://youtube.com"><img src="{{ asset('assets/img/yt.png') }}"/></a>
+                                <a href="http://instagram.com"><img src="{{ asset('assets/img/insta.png') }}"/></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="footerlogo">
+                    <img src="{{ asset('assets/img/logo.png') }}"/>
+                </div>
+            </footer>
+        {% endblock %}
+    </div>
+    {% block javascripts %}
+        <script>
+            var search_nb = "{{ asset('assets/img/search_nb.png') }}";
+            var statistics_nb = "{{ asset('assets/img/statistics_nb.png') }}";
+            var rewards_nb = "{{ asset('assets/img/reward_nb.png') }}";
+            var search = "{{ asset('assets/img/search.png') }}";
+            var statistics = "{{ asset('assets/img/statistics.png') }}";
+            var rewards = "{{ asset('assets/img/reward.png') }}";
+        </script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="{{ asset('js/script.js') }}"></script>
+        <script src="{{ asset('js/override.js') }}"></script>
+    {% endblock %}

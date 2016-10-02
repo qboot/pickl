@@ -1,0 +1,19 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block file_widget %}
+    {% spaceless %}
+            {% if image_url is defined %}
+                <p style="padding-right: 50px;">Update picture ?</p>
+                <img src="{{ asset(image_url) }}" class="picedit" />
+            {% endif %}
+            {{ block('form_widget') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block checkbox_row %}
+    {{ block('form_row') }}
+{% endblock checkbox_row %}
+
+{% block checkbox_label %}
+    {{ block('form_label') }}
+{% endblock checkbox_label %}

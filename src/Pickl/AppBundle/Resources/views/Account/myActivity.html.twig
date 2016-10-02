@@ -1,0 +1,105 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – My activity{% endblock %}
+
+{% block body %}
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul>
+            <li class="activ" ><a href="{{ path('pickl_app_my_account') }}">RETURN TO MY ACCOUNT</a></li>
+            <li><a href="#activity">MY ACTIVITY</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop">
+                <h1>Welcome !</h1>
+                <p>
+                    Here, you can find most of the information concerning your activities on Pickl. From a short
+                    summary of your level and the amount of experience you got until now to the latest projects
+                    you added to your Likes passing by all your different projects and contributions to the other’s
+                    projects.
+                </p>
+                <p>
+                    From here, you can edit your profile as well, by putting more precise information about you
+                    and changing your profile and cover photo to make it more personal.
+                </p>
+            </div>
+
+            <div id="activity" class="titleprofil">
+                <h2>1. ACTIVITY</h2>
+                <div class="sep"></div>
+            </div>
+            <div id="goalbarcontainer">
+                <p>YOUR EXPERIENCE<br><strong>{{ app.user.experience }} XP</strong></p>
+
+                <div class="projectgoalbar">
+                    <div class="level">{{ app.user.level }}</div>
+                    <img src="{{ asset('assets/icon/badge.png') }}"/>
+                    <div class="goalbarload" style="width:{{ percentage }}%"></div>
+                    <div class="percentBarDash">{{ percentage }}%</div>
+                </div>
+            </div>
+
+            <div class="tabprofil">
+                <div class="titletabprofil">
+                    <h3>ACTIVITY</h3>
+                </div>
+
+
+
+                {% if activities is not empty %}
+                    <ul>
+                        {% for activity in activities %}
+                            {% if activity.class == "Comment" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/comments.png') }}"/>
+                                    </div>
+                                    <p>You have sent comment "{{ activity.activity.message|slice(0,25) }}..." in project <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.project.slug}) }}">{{ activity.activity.project.title }}</a></p>
+                                    <p class="dateFloat">{{ activity.activity.date|date('d F, H:i') }}</p>
+                                </li>
+                            {% elseif activity.class == "Contribution" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/up.png') }}"/>
+                                    </div>
+                                    <p>You have donated ${{ activity.activity.amount }} to project <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.project.slug}) }}">{{ activity.activity.project.title }}</a></p>
+                                    <p class="dateFloat">{{ activity.activity.date|date('d F, H:i') }}</p>
+                                </li>
+                            {% elseif activity.class == "Project" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/liked.png') }}"/>
+                                    </div>
+                                    {% if activity.activity.published == true %}
+                                    <p>You have created project <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.slug}) }}">{{ activity.activity.title }}</a></p>
+                                    {% else %}
+                                        <p>You have created project {{ activity.activity.title }}. <a class="linkFloatGreen"  href="{{ path('pickl_app_project_edit', {'slug': activity.activity.slug}) }}">Publish it now ?</a></p>
+                                    {% endif %}
+                                    <p class="dateFloat">{{ activity.activity.startingDate|date('d F, H:i') }}</p>
+                                </li>
+                            {% elseif activity.class == "Favorite" %}
+                                <li>
+                                    <div class="tabitemprofil">
+                                        <img src="{{ asset('assets/icon/heart.png') }}"/>
+                                    </div>
+                                    <p>You have liked <a class="linkFloat" href="{{ path('pickl_app_project_view', {'slug': activity.activity.project.slug}) }}">{{ activity.activity.project.title }}</a></p>
+                                    <p class="dateFloat">{{ activity.activity.date|date('d F, H:i') }}</p>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul>
+                        <li>No activity... Come back later ;)<li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

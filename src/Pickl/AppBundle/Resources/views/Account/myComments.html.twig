@@ -1,0 +1,66 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – My comments{% endblock %}
+
+{% block body %}
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul>
+            <li class="activ" ><a href="{{ path('pickl_app_my_account') }}">RETURN TO MY ACCOUNT</a></li>
+            <li><a href="#comments">MY COMMENTS</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop">
+                <h1>Welcome !</h1>
+                <p>
+                    Here, you can find most of the information concerning your activities on Pickl. From a short
+                    summary of your level and the amount of experience you got until now to the latest projects
+                    you added to your Likes passing by all your different projects and contributions to the other’s
+                    projects.
+                </p>
+                <p>
+                    From here, you can edit your profile as well, by putting more precise information about you
+                    and changing your profile and cover photo to make it more personal.
+                </p>
+            </div>
+
+            <div id="comments" class="titleprofil">
+                <h2>COMMENTS</h2>
+                <div class="sep"></div>
+            </div>
+
+            {% if comments is not empty %}
+                <div class="tableprofil">
+                    <table>
+                        <tr><td>DATE</td><td>PROJECT</td><td>ACTIONS</td><td>COMMENTED</td></tr>
+                        {% for comment in comments %}
+                            <tr><td>{{ comment.date|date('d F') }}</td><td><a href="{{ path('pickl_app_project_view', {'slug':comment.project.slug}) }}">{{ comment.project.title }}</a></td><td>
+                                    <p><a href="{{ path('pickl_app_comment_edit', {'slug':comment.project.slug,'id':comment.id}) }}">Edit</a> /
+                                        <a href="{{ path('pickl_app_comment_delete', {'slug':comment.project.slug,'id':comment.id}) }}">Delete</a></p>
+                                </td><td><img src="{{ asset('assets/icon/comments.png') }}" /></td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <ul>
+                        {% for p in range(1, nbPages) %}
+                            <li {% if p == page %} class="loadMoreActive" {% endif %}>
+                                <div class="loadmore"><p><a href="{{ path('pickl_app_my_comments', {'page':p}) }}">{{ p }}</a></p></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            {% else %}
+                <p class="dashNothing">No comment yet</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

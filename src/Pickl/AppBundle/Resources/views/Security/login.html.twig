@@ -1,0 +1,48 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – Login{% endblock %}
+
+{% block body %}
+
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <div id="signupform">
+        <div id="signupcontain">
+            <h1>LOGIN</h1>
+            <div class="sep"></div>
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+            <ul><li>
+                    <div>
+                        {% if error is not empty %}
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        {% endif %}
+                    </div>
+                </li>
+                <li>
+                    <div style="position: relative;">
+                        <input class="signupinput" placeholder="Username" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                    </div>
+                </li>
+                <li>
+                    <div style="position: relative;">
+                        <input class="signupinput" placeholder="Password" type="password" id="password" name="_password" required="required" />
+                    </div>
+                </li>
+                <li><input id="remember_me" name="_remember_me" value="on" type="checkbox" class="signupcheckform"><label for="remember_me">REMEMBER ME</label></li>
+                <input class="form-control" type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <li><input type="submit" id="_submit" name="_submit" value="LOG IN" class="signupvalid"></li>
+            </ul>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+        <a href="{{ path('pickl_app_project_add') }}">CREATE YOUR OWN PROJECT !</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,298 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+{% block title %}{{ parent() }} – {{ project.title }}{% endblock %}
+{% block topproject %}
+    <div id="topproject" class="top" style="background:url('{{ asset(project.picture.getWebPath) }}') no-repeat center top fixed;background-size:cover;">
+    </div>
+    <div id="contenttitle">
+
+        <a href="{{ path('pickl_app_project_add_contribution', {'slug': project.slug}) }}"><h1>SUPPORT THIS PROJECT</h1></a>
+    </div>
+{% endblock %}
+{% block body %}
+
+    <div id="introproject">
+        <div id="authorpicture">
+            <img src="{{ asset('')~project.user.profilePicture.getWebPath }}"/>
+        </div>
+
+        <p>by <a href="{{ path('pickl_app_user_view', {'username': project.user.username} ) }}" style="text-decoration: none;"><strong>{{ project.user.username }}</strong></a>
+            <br/>
+            {% if project.user.name is null and project.user.firstname is null %}
+            {% elseif project.user.name is not null and project.user.firstname is null %}
+                {{ project.user.firstname }}
+                <br>
+            {% elseif project.user.name is null and project.user.firstname is not null %}
+                {{ project.user.firstname }}
+                <br>
+            {% endif %}
+            {% if project.user.country is null %}
+            {% elseif project.user.country is not null %}
+                {{ project.user.country|countryName }}
+                <br>
+            {% endif %}
+            {{ project.user.projects|length }}
+            PROJECTS CREATED /
+            {% set count = [] %}
+            {% set supp = 0 %}
+            {% for key, val in project.user.contributions %}
+                {%  if val.project.id in count %}
+                {% else %}
+                    {% set idd = ["'"+val.project.id+"'"] %}
+                    {% set count = count|merge(idd) %}
+                {% endif %}
+            {% endfor %}
+            {{ count|length }} PROJECTS SUPPORTED</p>
+    </div>
+    <div id="contentproject" style="min-height:800px;">
+        <div id="contentarticle">
+            <div id="articlemenu">
+                <ul>
+                    <li id="view" data="#blockView"><a>PITCH</a></li><!--
+                    --><li id="news" data="#blockNews"><a>NEWS</a></li><!---
+                    --><li id="comments" data="#blockComments"><a>COMMENTS</a></li><!--
+                    --><li id="donators" data="#blockDonators"><a>DONATORS</a></li>
+                </ul>
+                <ul>
+                    <li><a href="http://facebook.com"><img src="{{ asset('assets/img/fb.png') }}"/></a></li>
+                    <li><a href="http://twitter.com"><img src="{{ asset('assets/img/twitter.png') }}"/></a></li>
+                    <li><a href="http://youtube.com"><img src="{{ asset('assets/img/yt.png') }}"/></a></li>
+                    <li><a href="http://instagram.com"><img src="{{ asset('assets/img/insta.png') }}"/></a></li>
+                </ul>
+            </div>
+
+            <div id="contentpage">
+                <div id="blockView" style="width:100%;height:auto;">
+                    <div id="articletitle">
+                        <h2>{{ project.title }}</h2>
+                        <h3>#{{ project.category.name }}</h3>
+                        <div class="like">
+                            <a href="{{ path('pickl_app_project_add_like', {'slug': project.slug}) }}">
+                                {% set liked = false %}
+                                {% if is_granted("ROLE_USER") %}
+                                    {% if app.user.favorites is not empty %}
+                                        {% for like in app.user.favorites if like.project == project %}
+                                            {% set liked = true %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    {% if liked == false %}
+                                        <img id="likefav" src="{{ asset('assets/img/heart.png') }}"/>
+                                    {% elseif liked == true %}
+                                        <img id="likefav" src="{{ asset('assets/icon/heart2.png') }}"/>
+                                    {% endif %}
+                                {% endif %}
+                                {% if app.user is null %}
+                                    <img src="{{ asset('assets/icon/heart2.png') }}" alt="Heart" id="likefav">
+                                {% endif %}
+                                <br>
+                                <p>{{ project.favorites|length }}</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="articleparagraph">
+                        <p style="line-height: 24px;">{{ project.smallDescription }}</p>
+                    </div>
+                    <div class="articlegoalbar">
+                        <div class="left commentgoalbar"><p><strong>{{ project.contributions|length }} contributor{% if project.contributions|length > 1 %}s{% endif %}</strong></p></div><div class="right commentgoalbar"><p>{{ project.remainingTime }} left</p></div>
+                        <div class="projectgoalbar"><div class="goalbarload" style="width:{{ project.percent }}%;max-width:100%;"></div></div>
+                        <div class="left commentgoalbar"><p><strong>${{ project.collectedAmount }}</strong></p></div><div class="right commentgoalbar"><p>{{ project.percent }}% of ${{ project.requestedAmount }}</p></div>
+                    </div>
+                    <div class="articleparagraph">
+                        <div style="line-height: 24px;">{{ project.bigDescription }}</div>
+                    </div>
+                    <div class="articlegoalbar">
+                        <div class="left commentgoalbar">
+                            <a href="{{ project.slug }}/report">
+                                <button id="report">REPORT</button>
+                            </a>
+                        </div>
+                        <div class="tagada">
+                            {% for tag in project.tags %}
+                                <a href="../search?q={{ tag.word }}">#{{ tag.word }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div id="blockNews" style="width:100%;height:auto;display: none;">
+                    <div class="wrapNews">
+                        {% for news in project.news %}
+                            <div class="miniNews">
+                                <div class="miniNewsTitle">{{ loop.index }} / {{ news.title }}</div>
+
+                                <div class="miniNewsImg" style="background:url('{{ asset(news.picture.getWebPath) }}') no-repeat center top;background-size:cover;"></div>
+
+                                <div class="miniNewsMess" style="line-height: 25px;">{{ news.message }}</div>
+
+                                {% if is_granted('ROLE_USER') %}
+                                    {% if is_granted('ROLE_ADMIN') or app.user.username == project.user.username %}
+                                        <div class="controlNews">
+                                            <a href="{{ path('pickl_app_news_edit',{'slug':project.slug,'id':news.id}) }}">EDIT</a>
+                                            <a href="{{ path('pickl_app_news_delete',{'slug':project.slug,'id':news.id}) }}">DELETE</a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {% if project.news is empty %}
+                            <div class="errorPro">Sorry, no news to show yet...</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div id="blockComments" style="width:100%;height:auto; display:none;">
+                    <div class="wrapComments">
+                        {% for comment in commentDate %}
+                            <div class="miniComments">
+                                {% if loop.index0 is divisibleby(2) %}
+                                    {% if comment.user.username == project.user.username %}
+                                        <div class="comFromCreator">
+                                    {% endif %}
+
+                                        <div class="sideUser">
+                                            <div class="miniComPic" style="background:url('{{ asset(comment.user.profilePicture.getWebPath) }}') no-repeat center top;background-size:cover;"></div>
+                                            <p><a style="color:rgb(21,22,23);text-decoration:none;" href="{{ path('pickl_app_user_view', {'username':comment.user.username}) }}">{{ comment.user.username }}</a></p>
+                                        </div>
+                                        <div class="sideMess">
+                                            <div class="smallStar"></div>
+                                            <p class="sideMessDate">Posted on {{ comment.date|date('F') }}, the {{ comment.date|date('jS') }} of {{ comment.date|date('Y') }}</p>
+                                            <p class="sideMessShort">{{ comment.message|slice(0,30) }}...</p>
+                                            <p class="sideMessLong">{{ comment.message }}</p>
+
+                                            {% if is_granted('ROLE_USER') %}
+                                                {% if app.user.username == comment.user.username %}
+                                                    <div class="sideModif">
+                                                        <a href="{{ path('pickl_app_comment_edit', {'slug':project.slug,'id':comment.id}) }}">Edit</a>
+                                                        <a href="{{ path('pickl_app_comment_delete', {'slug':project.slug,'id':comment.id}) }}">Delete</a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+
+                                    {% if comment.user.username == project.user.username %}
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    {% if comment.user.username == project.user.username %}
+                                         <div class="comFromCreator">
+                                    {% endif %}
+                                    <div class="sideMess">
+                                        <div class="smallStar"></div>
+                                        <p class="sideMessDate">Posted on {{ comment.date|date('F') }}, the {{ comment.date|date('jS') }} of {{ comment.date|date('Y') }}</p>
+                                        <p class="sideMessShort">{{ comment.message|slice(0,30) }}...</p>
+                                        <p class="sideMessLong">{{ comment.message }}</p>
+
+                                        {% if is_granted('ROLE_USER') %}
+                                            {% if app.user.username == comment.user.username %}
+                                                <div class="sideModif">
+                                                    <a href="{{ path('pickl_app_comment_edit', {'slug':project.slug,'id':comment.id}) }}">Edit</a>
+                                                    <a href="{{ path('pickl_app_comment_delete', {'slug':project.slug,'id':comment.id}) }}">Delete</a>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="sideUser">
+                                        <div class="miniComPic" style="background:url('{{ asset(comment.user.profilePicture.getWebPath) }}') no-repeat center top;background-size:cover;"></div>
+                                        <p><a style="color:rgb(21,22,23);text-decoration:none;" href="{{ path('pickl_app_user_view', {'username':comment.user.username}) }}">{{ comment.user.username }}</a></p>
+                                    </div>
+                                         {% if comment.user.username == project.user.username %}
+                                            </div>
+                                         {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {% if project.comments is empty %}
+                            <div class="errorPro">Sorry, no comments to show yet...</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div id="blockDonators" style="width:100%;height:auto;display:none;">
+                    <div class="wrapDonators">
+                        {% for contributor in contributors %}
+                            <div class="miniContrib">
+                                <div class="miniContribImg" style="background:url('{{ asset(contributor.profilePicture.getWebPath) }}') no-repeat center top;background-size:cover;"></div>
+                                <div class="miniContribUser">{{ contributor.username }}</div>
+                                {% set total = 0 %}
+                                {% for giver in contributor.contributions %}
+                                    {% if giver.project.id == project.id %}
+                                        {% set total = total + giver.amount %}
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="miniContribAmount">with &dollar;{{ total }} ~ Thanks!</div>
+                            </div>
+                        {% endfor %}
+                        {% if contributors is empty %}
+                            <div class="errorPro">Sorry, there is no contributor yet...</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+
+            </div><!-- content page -->
+        </div><!-- content-article -->
+
+        <div class="megaCounterparts">
+            {% if is_granted('ROLE_USER') %}
+                <div style="border-bottom:26px solid white;">
+                    <a href="{{ path('pickl_app_comment_add', {'slug':project.slug}) }}">WRITE A COMMENT</a>
+                    {% if is_granted('ROLE_ADMIN') or app.user.username == project.user.username %}
+                        <a href="{{ path('pickl_app_news_add',{'slug':project.slug}) }}">WRITE A NEWS</a>
+                        <a href="{{ path('pickl_app_project_edit',{'slug':project.slug}) }}">EDIT THIS PROJECT</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% for counterpart in project.counterparts %}
+                <div class="miniCounterparts">
+                    <div class="miniTitle">{{ counterpart.title }}</div>
+                    <div class="miniDesc">{{ counterpart.description }}</div>
+
+                    <p class="miniNbCount">{{ counterpart.nbCounterparts }} on {{ counterpart.maxCounterparts }} reclaimed</p>
+
+                    <div class="miniAmount">
+                        Only &dollar;{{ counterpart.minAmount }}
+                    </div>
+                    <div style="width:100%;height:40px;background-color: white;"></div>
+                </div>
+            {% endfor %}
+            {% if project.counterparts is empty %}
+                <div class="miniCounterparts">
+                    <div class="miniTitle">No gift yet</div>
+                    <div class="miniDesc">Sorry, no gift for this project... Come back later !</div>
+
+                    <div class="miniAmount">
+                        --
+                    </div>
+                    <div style="width:100%;height:40px;background-color: white;"></div>
+                </div>
+            {% endif %}
+        </div>
+
+
+    </div> <!-- content project -->
+    <script>
+        $('textarea').each(function(){
+            var el = $(this).parent().children('.textCount');
+            el.html($(this).val().length +'/'+ el.attr('data'));
+        });
+
+        $(document).on('keyup','textarea', function(){
+            var el = $(this).parent().children('.textCount');
+            el.html($(this).val().length +'/'+ el.attr('data'));
+        });
+
+    </script>
+
+{% endblock %}

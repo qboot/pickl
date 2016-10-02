@@ -1,0 +1,32 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ parent() }} – Successful registration{% endblock %}
+
+{% block body %}
+
+    <div id="signupform">
+        <div id="signupcontain">
+            <h1>THANKS FOR SUBSCRIBING!</h1>
+            <div class="sep"></div>
+            <form method="post">
+                <ul>
+                    <li style="margin-bottom: 10px !important;"><a class="signupvalid" href="{{ path('pickl_app_project_add') }}">CREATE A PROJECT</a></li>
+                    <li style="margin-bottom: 10px !important;"><a class="signupvalid" href="{{ path('pickl_app_explore') }}">EXPLORE</a></li>
+                    <li style="margin-bottom: 10px !important;"><a class="signupvalid" href="{{ path('pickl_app_user_edit') }}">COMPLETE YOUR PROFILE</a></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+        <a href="{{ path('pickl_app_project_add') }}">CREATE YOUR OWN PROJECT !</a>
+    </div>
+{% endblock %}

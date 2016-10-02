@@ -1,0 +1,333 @@
+# MAIN CONTROLLER
+
+pickl_app_homepage:
+    path:     /
+    defaults:
+        _controller: PicklAppBundle:Main:index
+
+pickl_app_explore:
+    path:     /explore/{limit}
+    defaults:
+        _controller: PicklAppBundle:Main:explore
+        limit: 10
+    requirements:
+        limit: \d*
+
+pickl_app_search:
+    path:     /search
+    defaults:
+        _controller: PicklAppBundle:Main:search
+
+pickl_app_about:
+    path:     /about
+    defaults:
+        _controller: PicklAppBundle:Main:getAbout
+
+pickl_app_how_it_works:
+    path:     /how-it-works
+    defaults:
+        _controller: PicklAppBundle:Main:getHowItWorks
+
+pickl_app_faq:
+    path:     /how-it-works
+    defaults:
+        _controller: PicklAppBundle:Main:getHowItWorks
+
+pickl_app_rewards:
+    path:     /rewards
+    defaults:
+        _controller: PicklAppBundle:Main:getRewards
+
+pickl_app_ranking:
+    path:     /ranking/{limit}
+    defaults:
+        _controller: PicklAppBundle:Main:getRanking
+        limit:        25
+    requirements:
+        page: \d*
+
+pickl_app_category:
+    path:   /category/{slug}/{page}
+    defaults:
+        _controller: PicklAppBundle:Category:getCategory
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_newsletter:
+    path:   /newsletter
+    defaults:
+        _controller: PicklAppBundle:Main:newsletter
+
+# PROJECT CONTROLLER
+
+pickl_app_project_add:
+    path:     /account/project/add
+    defaults:
+        _controller: PicklAppBundle:Project:add
+
+pickl_app_project_view:
+    path:     /project/{slug}
+    defaults:
+        _controller: PicklAppBundle:Project:view
+
+pickl_app_project_edit:
+    path:     /account/project/{slug}/edit
+    defaults:
+        _controller: PicklAppBundle:Project:edit
+
+pickl_app_project_delete:
+    path:     /account/project/{slug}/delete
+    defaults:
+        _controller: PicklAppBundle:Project:delete
+
+pickl_app_project_add_like:
+    path:   /project/{slug}/like/{dashboard}
+    defaults:
+        _controller:  PicklAppBundle:Project:addLike
+        dashboard: false
+
+pickl_app_project_add_contribution:
+    path:   /project/{slug}/contribution
+    defaults:
+        _controller:  PicklAppBundle:Project:addContribution
+
+
+
+# COMMENT CONTROLLER
+pickl_app_comment_add:
+    path:   /project/{slug}/comment/add
+    defaults:
+        _controller:  PicklAppBundle:Comment:addComment
+
+pickl_app_comment_delete:
+    path:   /project/{slug}/comment/{id}/delete
+    defaults:
+        _controller: PicklAppBundle:Comment:deleteComment
+    requirements:
+        id: \d+
+
+pickl_app_comment_edit:
+    path:   /project/{slug}/comment/{id}/edit
+    defaults:
+        _controller: PicklAppBundle:Comment:editComment
+    requirements:
+        id: \d+
+
+# NEWS CONTROLLER
+pickl_app_news_add:
+    path:     /project/{slug}/news/add
+    defaults:
+        _controller: PicklAppBundle:News:writeNews
+
+pickl_app_news_edit:
+    path:     /project/{slug}/news/{id}/edit
+    defaults:
+        _controller: PicklAppBundle:News:editNews
+    requirements:
+            id: \d+
+
+pickl_app_news_delete:
+    path:     /project/{slug}/news/{id}/delete
+    defaults:
+        _controller: PicklAppBundle:News:deleteNews
+    requirements:
+            id: \d+
+
+# ACCOUNT CONTROLLER
+
+pickl_app_my_account:
+    path:     /account/
+    defaults:
+        _controller: PicklAppBundle:Account:getDashboard
+
+pickl_app_my_projects:
+    path:     /account/my-projects/{page}
+    defaults:
+        _controller: PicklAppBundle:Account:getMyProjects
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_my_contributions:
+    path:     /account/my-contributions/{page}
+    defaults:
+        _controller: PicklAppBundle:Account:getMyContributions
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_my_likes:
+    path:     /account/my-likes/{page}
+    defaults:
+        _controller: PicklAppBundle:Account:getMyLikes
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_my_comments:
+    path:     /account/my-comments/{page}
+    defaults:
+        _controller: PicklAppBundle:Account:getMyComments
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_my_activity:
+    path:     /account/my-activity
+    defaults:
+        _controller: PicklAppBundle:Account:getMyActivity
+
+# USER CONTROLLER + PENSER A FOSUSERBUNDLE
+
+pickl_app_user_view:
+    path:     /user/{username}
+    defaults:
+        _controller: PicklAppBundle:User:view
+
+pickl_app_user_edit:
+    path:     /account/profile/edit
+    defaults:
+        _controller: PicklAppBundle:User:edit
+
+fos_routing:
+    resource: "@PicklAppBundle/Resources/config/fosrouting.xml"
+
+pickl_app_user_logout:
+    path:     /account/profile/logout
+    defaults:
+        _controller: PicklAppBundle:User:logout
+
+# ADMIN CONTROLLER
+
+pickl_app_admin:
+    path:    /admin/
+    defaults:
+        _controller: PicklAppBundle:Admin:index
+
+pickl_app_admin_users:
+    path:    /admin/users/{page}
+    defaults:
+        _controller: PicklAppBundle:Admin:getUsers
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_admin_projects:
+    path:   /admin/projects/{page}
+    defaults:
+        _controller: PicklAppBundle:Admin:getProjects
+        page: 1
+    requirements:
+        page: \d*
+
+pickl_app_admin_rewards:
+    path:   /admin/rewards
+    defaults:
+        _controller:  PicklAppBundle:Admin:getRewards
+
+pickl_app_admin_ranks:
+    path:   /admin/ranks
+    defaults:
+        _controller:  PicklAppBundle:Admin:getRanks
+
+pickl_app_admin_newsletter:
+    path:   /admin/newsletter
+    defaults:
+        _controller: PicklAppBundle:Admin:writeNewsletter
+
+# ADMIN CONTROLLER - PROMOTE AND DEMOTE
+
+pickl_app_admin_promote:
+    path:   /admin/users/{username}/promote
+    defaults:
+        _controller: PicklAppBundle:Admin:promote
+
+pickl_app_admin_demote:
+    path:   /admin/users/{username}/demote
+    defaults:
+        _controller: PicklAppBundle:Admin:demote
+
+# ADMIN CONTROLLER - PROJECT
+
+pickl_app_admin_project_add:
+    path:   /admin/projects/add
+    defaults:
+        _controller: PicklAppBundle:Admin:addProject
+
+pickl_app_admin_project_edit:
+    path:   /admin/projects/{slug}/edit
+    defaults:
+        _controller: PicklAppBundle:Admin:editProject
+
+pickl_app_admin_project_delete:
+    path:   /admin/projects/{slug}/delete
+    defaults:
+        _controller: PicklAppBundle:Admin:deleteProject
+
+# ADMIN CONTROLLER - USER
+
+pickl_app_admin_user_add:
+    path:   /admin/users/add
+    defaults:
+        _controller: PicklAppBundle:Admin:addUser
+
+pickl_app_admin_user_edit:
+    path:   /admin/users/{username}/edit
+    defaults:
+        _controller: PicklAppBundle:Admin:editUser
+
+pickl_app_admin_user_delete:
+    path:   /admin/users/{username}/delete
+    defaults:
+        _controller: PicklAppBundle:Admin:deleteUser
+
+# ADMIN CONTROLLER - RANK
+
+pickl_app_admin_rank_add:
+    path:   /admin/ranks/add
+    defaults:
+        _controller: PicklAppBundle:Admin:addRank
+
+pickl_app_admin_rank_edit:
+    path:   /admin/ranks/{id}/edit
+    defaults:
+        _controller: PicklAppBundle:Admin:editRank
+    requirements:
+            id: \d+
+
+pickl_app_admin_rank_delete:
+    path:   /admin/ranks/{id}/delete
+    defaults:
+        _controller: PicklAppBundle:Admin:deleteRank
+    requirements:
+            id: \d+
+
+# AJAX
+
+pickl_app_ajax_news:
+    path:   /project/{slug}/news
+    defaults:
+        _controller: PicklAppBundle:Project:getNewsAjax
+
+pickl_app_ajax_comments:
+    path:   /project/{slug}/comments
+    defaults:
+        _controller: PicklAppBundle:Project:getCommentsAjax
+
+pickl_app_ajax_donators:
+    path:   /project/{slug}/donators
+    defaults:
+        _controller: PicklAppBundle:Project:getDonatorsAjax
+
+pickl_app_ajax_view:
+    path:   /project/{slug}/view
+    defaults:
+        _controller: PicklAppBundle:Project:getViewAjax
+
+# REPORT
+
+pickl_app_ajax_report:
+    path:   /project/{slug}/report
+    defaults:
+        _controller: PicklAppBundle:Project:reportAjax

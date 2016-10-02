@@ -1,0 +1,132 @@
+{% extends 'PicklAppBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} – Search : {{ arg }}{% endblock %}
+{% block topproject %}
+    <div id="topproject" class="top" style="background:url('{{ asset('assets/img/explore.jpg') }}') no-repeat center top fixed;background-size:cover;">
+    </div>
+    <div id="contenttitle">
+        <h1>SEARCH</h1>
+    </div>
+{% endblock %}
+{% block body %}
+
+    <div class="trend" style="padding-bottom:30px !important; padding-left:30px;">
+        <h2>ALL RESULTS // SEARCH : <span style="color:rgb(150,150,150);">"{{ arg|upper }}"</span></h2>
+        <div class="sep"></div>
+    </div>
+
+    {% if results.inTitle is not empty %}
+
+        <div class="trend" style="padding-bottom:0px !important;">
+            <h3>FOUND IN TITLE</h3>
+        </div>
+
+        <div class="containAllP">
+            {% for result in results.inTitle %}
+
+                <div class="projectpreview">
+                    <div class="projectpreviewimg" style="background:url({{ asset(result.project.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                        <a href="{{ path('pickl_app_project_view', {'slug': result.project.slug}) }}"></a>
+                    </div>
+                    <div class="projectpreviewtxt">
+                        <h3><a href="{{ path('pickl_app_project_view', {'slug': result.project.slug}) }}" alt="{{ result.project.title }}">{{ result.project.title|raw }}</a></h3>
+
+                        <p>{{ result.project.bigDescription|slice(0,300)|raw }}</p>
+                    </div>
+                    <div class="projectpreviewmodif">
+
+                    </div>
+
+                    <div class="addInfosP">
+                        {{ result.project.favorites|length }} <img src="{{ asset('assets/icon/heart.png') }}"/> ///
+                        {{ result.project.contributions|length }} <img src="{{ asset('assets/icon/up.png') }}"/> ///
+                        {{ result.project.percent }}% - &dollar;{{ result.project.collectedAmount }}/&dollar;{{ result.project.requestedAmount }}
+                    </div>
+
+                </div>
+
+                <div class="separe" style="width:100% !important;margin-bottom:50px;"></div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if results.inDesc is not empty %}
+
+        <div class="trend" style="padding-bottom:0px !important;">
+            <h3>FOUND IN DESCRIPTION</h3>
+        </div>
+
+        <div class="containAllP">
+            {% for result in results.inDesc %}
+
+                <div class="projectpreview">
+                    <div class="projectpreviewimg" style="background:url({{ asset(result.project.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                        <a href="{{ path('pickl_app_project_view', {'slug': result.project.slug}) }}"></a>
+                    </div>
+                    <div class="projectpreviewtxt">
+                        <h3><a href="{{ path('pickl_app_project_view', {'slug': result.project.slug}) }}" alt="{{ result.project.title }}">{{ result.project.title|raw }}</a></h3>
+
+                        <p>{{ result.project.bigDescription|slice(0,300)|raw }}</p>
+                    </div>
+                    <div class="projectpreviewmodif">
+
+                    </div>
+
+                    <div class="addInfosP">
+                        {{ result.project.favorites|length }} <img src="{{ asset('assets/icon/heart.png') }}"/> ///
+                        {{ result.project.contributions|length }} <img src="{{ asset('assets/icon/up.png') }}"/> ///
+                        {{ result.project.percent }}% - &dollar;{{ result.project.collectedAmount }}/&dollar;{{ result.project.requestedAmount }}
+                    </div>
+
+                </div>
+
+                <div class="separe" style="width:100% !important;margin-bottom:50px;"></div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+    {% if results.inTag is not empty %}
+
+        <div class="trend" style="padding-bottom:0px !important;">
+            <h3>FOUND IN TAG</h3>
+        </div>
+
+        <div class="containAllP">
+            {% for result in results.inTag %}
+
+                <div class="projectpreview">
+                    <div class="projectpreviewimg" style="background:url({{ asset(result.project.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                        <a href="{{ path('pickl_app_project_view', {'slug': result.project.slug}) }}"></a>
+                    </div>
+                    <div class="projectpreviewtxt">
+                        <h3><a href="{{ path('pickl_app_project_view', {'slug': result.project.slug}) }}" alt="{{ result.project.title }}">{{ result.project.title|raw }}</a></h3>
+
+                        <p>{{ result.project.bigDescription|slice(0,300)|raw }}</p>
+                    </div>
+                    <div class="projectpreviewmodif">
+
+                    </div>
+
+                    <div class="addInfosP">
+                        {{ result.project.favorites|length }} <img src="{{ asset('assets/icon/heart.png') }}"/> ///
+                        {{ result.project.contributions|length }} <img src="{{ asset('assets/icon/up.png') }}"/> ///
+                        {{ result.project.percent }}% - &dollar;{{ result.project.collectedAmount }}/&dollar;{{ result.project.requestedAmount }}
+                    </div>
+
+                </div>
+
+                <div class="separe" style="width:100% !important;margin-bottom:50px;"></div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if results.inTag is empty and results.inTitle is empty and results.inDesc is empty %}
+        <div class="specialInfoCat">
+            <h5>No project found :(</h5>
+            <a href="{{ path('pickl_app_project_add') }}">Why not create yours now ?</a>
+            <a href="{{ path('pickl_app_explore') }}">Let's explore some others amazing projects !</a>
+        </div>
+    {% endif %}
+
+        <div style="width:100%;height:150px;"></div>
+{% endblock %}

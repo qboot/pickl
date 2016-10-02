@@ -1,0 +1,47 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – Users{% endblock %}
+
+{% block body %}
+    <div id="content" class="rewardscontent">
+    <div id="rewardbackground">
+    <div class="articleparagraph">
+        <h2>RANKING</h2>
+        <img src="{{ asset('assets/img/reward/ranking.png') }}"/>
+        <p>
+            This ranking table gather the best Picklrs based on the experience they obtained by realizing
+            different activities. There are several ways to get experience: creating a project, contributing,
+            commenting… And collecting all the rewards!
+        </p>
+        <p>
+            The ranking is refreshed each second with the latest statistics of Pickl so you can see how
+            you evolve.
+        </p>
+    </div>
+
+        <div class="tablestats tableranking">
+            <table>
+                <tr class="firststats"><td></td><td>PLACE</td><td>USERNAME</td><td>LVL</td><td>XP</td></tr>
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <tr style="background-color:rgb(71,154,88);color:white;"><td><div class="profileWrap"><div class="profileInner"><div class="profile" style="background: url({{ asset(app.user.profilePicture.getWebPath) }}) center no-repeat;background-size:cover;"></div></div></div></td><td>#{{ placeCurrentUser }}</td><td><a style="color:white !important;" href="{{ path('pickl_app_user_view', {'username': app.user.username}) }}" alt="{{ app.user.username }}">{{ app.user.username }}</a></td><td>Lvl.{{ app.user.level }}</td><td>{{ app.user.experience }}</td></tr>
+    {% endif %}
+                {#  Foreach tableau  #}
+                {% for user in users %}
+                    <tr>
+                        <td><div class="profileWrap"><div class="profileInner"><div class="profile" style="background: url({{ asset(user.user.profilePicture.getWebPath) }}) center no-repeat;background-size:cover;"></div></div></div></td>
+                        <td>#{{ user.place }}</td>
+                        <td><a href="{{ path('pickl_app_user_view', {'username': user.user.username}) }}" alt="{{ user.user.username }}">{{ user.user.username }}</a></td>
+                        <td>Lvl.{{ user.user.level }}</td>
+                        <td>{{ user.user.experience }}</td>
+                    </tr>
+
+
+                    {% endfor %}
+
+            </table>
+            <div id="loadmorenews"><p><a href="{{ path('pickl_app_ranking', {'limit':(limit+25)}) }}">+</a></p></div>
+        </div>
+
+    </div>
+    </div>
+{% endblock %}

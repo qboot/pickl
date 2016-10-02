@@ -1,0 +1,312 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – Add{% endblock %}
+
+{% block body %}
+
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <h1>NEW PROJECT ?</h1>
+            <div class="sep"></div>
+        </div>
+        <ul>
+            <li><a href="{{ path('pickl_app_how_it_works') }}">HOW IT WORKS</a></li>
+            <li class="activ"><a href="#">SUMMARY</a></li>
+            <li><a href="#basic">1. BASIC INFORMATIONS</a></li>
+            <li><a href="#pitch">2. PITCH</a></li>
+            <li><a href="#category">3. CATEGORY</a></li>
+            <li><a href="#counterparts">4. COUNTERPARTS</a></li>
+            <li><a href="#published">5. PUBLISHED</a></li>
+        </ul>
+    </div>
+
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop">
+                <h1>Welcome !</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, consequatur! Quae non voluptatibus a laudantium, perspiciatis, doloremque ullam temporibus aspernatur illum rem recusandae nesciunt perferendis iste nemo ab nulla lorem ipsum dolor sit amet.<br><br> consectetur adipisicing elit. Eius amet quis ut dolorum, itaque, dolore harum, eaque totam beatae asperiores quasi rem earum hic, sunt ea et necessitatibus atque.</p>
+            </div>
+
+            <div id="activity" class="titleprofil">
+                <h2 id="basic">1. BASIC INFORMATIONS // <strong>Step 1/5</strong></h2>
+                <div class="sep"></div>
+            </div>
+
+            {% macro information_prototype(counterpart) %}
+                <div class="sizeform formcategory">
+                    <li>
+                        <div style="position:relative;">
+                            <p>{{ form_label(counterpart.title, "Counterpart title") }}</p>
+                            {{ form_errors(counterpart.title) }}
+                            <div class="formdouble">
+                                {{ form_widget(counterpart.title, {'attr': {'class': 'longinput'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div style="position:relative;">
+                            <p>{{ form_label(counterpart.minAmount,'Amount') }}</p>
+                            {{ form_errors(counterpart.minAmount) }}
+                            <div class="formdouble">
+                                {{ form_widget(counterpart.minAmount, {'attr': {'class': 'longinput'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div style="position:relative;">
+                            <p>{{ form_label(counterpart.description, "Description") }}</p>
+                            {{ form_errors(counterpart.description) }}
+                            <div class="formdouble">
+                                <div class="textCount" data="255">0/255</div>
+                                {{ form_widget(counterpart.description, {'attr': {'class': 'largeinput', 'rows': '20', 'cols':'50'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="stock">
+                        <div style="position:relative;">
+                            <p>{{ form_label(counterpart.maxCounterparts, "Stock") }}</p>
+                            {{ form_errors(counterpart.maxCounterparts) }}
+                            <div class="formdouble">
+                                {{ form_widget(counterpart.maxCounterparts, {'attr': {'class': 'longinput'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            {% endmacro %}
+
+            {% form_theme form 'PicklAppBundle:Form:fields.html.twig' %}
+
+            {{ form_start(form, {'attr': {'id': 'formaddproject', 'class': 'form-horizontal'}}) }}
+
+            {# Les erreurs générales du formulaire. #}
+            {{ form_errors(form) }}
+            <ul>
+                <div class="sizeform">
+                    <li>
+                        <div style="position:relative;">
+                            {# Génération du label. #}
+                            <p>{{ form_label(form.title, "Project title") }}</p>
+
+                            {# Affichage des erreurs pour ce champ précis. #}
+                            {{ form_errors(form.title, {'attr': {'class':'formerrors'}}) }}
+
+                            <div class="formdouble">
+                                {# Génération de l'input. #}
+                                {{ form_widget(form.title, {'attr': {'class': 'longinput'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                    {% if form.requestedAmount is defined %}
+                        <li>
+                            <div style="position:relative;">
+                                {# Génération du label. #}
+                                <p>{{ form_label(form.requestedAmount, "Requested Amount") }}</p>
+
+                                {# Affichage des erreurs pour ce champ précis. #}
+                                {{ form_errors(form.requestedAmount) }}
+
+                                <div class="formdouble">
+                                    {# Génération de l'input. #}
+
+                                    {{ form_widget(form.requestedAmount, {'attr': {'class': 'smallinput'}}) }}
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <div style="position:relative;">
+                            {# Génération du label. #}
+                            <p>{{ form_label(form.smallDescription, "Tiny description") }}</p>
+
+                            {# Affichage des erreurs pour ce champ précis. #}
+                            {{ form_errors(form.smallDescription) }}
+
+                            <div class="formdouble">
+                                <div class="textCount" data="255">0/255</div>
+                                {# Génération de l'input. #}
+
+                                {{ form_widget(form.smallDescription, {'attr': {'class': 'largeinput', 'rows': '4', 'cols':'50'}}) }}
+                            </div>
+                        </div>
+                    </li>
+
+                    {% if form.duration is defined %}
+                        <li>
+                            <div style="position:relative;">
+                                {# Génération du label. #}
+                                <p>{{ form_label(form.duration, "Campaign duration") }}</p>
+
+                                {# Affichage des erreurs pour ce champ précis. #}
+                                {{ form_errors(form.duration) }}
+
+                                <div class="formdouble">
+                                    {# Génération de l'input. #}
+
+                                    {{ form_widget(form.duration) }}
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <div style="position:relative;">
+                            {# Génération du label. #}
+                            <p>{{ form_label(form.country, "Country") }}</p>
+
+                            {# Affichage des erreurs pour ce champ précis. #}
+                            {{ form_errors(form.country) }}
+
+                            <div class="formdouble">
+                                {# Génération de l'input. #}
+
+                                {{ form_widget(form.country) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div style="position:relative;">
+                            {# Génération du label. #}
+                            <p>{{ form_label(form.picture, "Picture") }}</p>
+
+                            {# Affichage des erreurs pour ce champ précis. #}
+                            {{ form_errors(form.picture) }}
+
+                            <div class="formdouble">
+                                {# Génération de l'input. #}
+
+                                {{ form_widget(form.picture) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div style="position:relative;">
+                            <p>{{ form_label(form.tags, "Tags") }}</p>
+
+                            {{ form_errors(form.tags) }}
+
+                            <div class="formdouble">
+                                {{ form_widget(form.tags) }}
+                            </div>
+                        </div>
+                    </li>
+                </div>
+
+                <div class="titleprofil">
+                    <h2 id="pitch">2. PITCH // <strong>Step 2/5</strong></h2>
+                    <div class="sep"></div>
+                </div>
+
+                <div class="sizeform">
+                    <li>
+                        <div style="position:relative;">
+                            {# Génération du label. #}
+                            <p>{{ form_label(form.bigDescription, "Pitch") }}</p>
+
+                            {# Affichage des erreurs pour ce champ précis. #}
+                            {{ form_errors(form.bigDescription) }}
+
+                            <div class="formdouble">
+                                <div class="textCount" data="1500">0/1500</div>
+                                {# Génération de l'input. #}
+
+                                {{ form_widget(form.bigDescription, {'attr': {'class': 'largeinput', 'rows': '20', 'cols':'50'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                </div>
+
+                {% if form.category is defined %}
+                    <div class="titleprofil">
+                        <h2 id="category">3. CATEGORY // <strong>Step 3/5</strong></h2>
+                        <div class="sep"></div>
+                    </div>
+
+                    <div class="sizeform">
+                        <li>
+                            <div style="position:relative;">
+                                {# Génération du label. #}
+                                <p>{{ form_label(form.category, "Category") }}</p>
+
+                                {# Affichage des erreurs pour ce champ précis. #}
+                                {{ form_errors(form.category) }}
+
+                                <div class="formdouble">
+                                    {# Génération de l'input. #}
+
+                                    {{ form_widget(form.category) }}
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                {% endif %}
+
+                <div class="titleprofil">
+                    <h2 id="counterparts">4. COUNTERPARTS // <strong>Step 4/5</strong></h2>
+                    <div class="sep"></div>
+                </div>
+
+                <div class="sizeform formcategory">
+                    <div id="project_collection" data-prototype="{{ _self.information_prototype(form.counterparts.vars.prototype)|e }}">
+                        {% for counterpart in form.counterparts %}
+                            {{ _self.information_prototype(counterpart) }}
+                        {% endfor %}
+                    </div>
+
+                    <li><a href="#" id="add_counterpart" class="addCat">Add a new counterpart</a></li>
+                </div>
+
+
+                {% if form.published is defined %}
+                    <div class="titleprofil">
+                        <h2 id="published">5. PUBLISHED // <strong>Step 5/5</strong></h2>
+                        <div class="sep"></div>
+                    </div>
+
+                    <div class="sizeform formcategory">
+                        <li>
+                            <div>
+                                <div>
+                                    {# Génération du label. #}
+                                    <p>{{ form_label(form.published, "Publish it ?") }}</p>
+
+                                    {# Affichage des erreurs pour ce champ précis. #}
+                                    {{ form_errors(form.published) }}
+
+                                    <div class="formdouble">
+                                        {# Génération de l'input. #}
+
+                                        {{ form_widget(form.published) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                {% endif %}
+            </ul>
+            <!-- fin du form -->
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    {#{{ include("PicklAppBundle:Project:projectForm.html.twig") }}#}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ asset('js/formCounterparts.js') }}"></script>
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+        <a href="#">GO, SUBMIT MY PROJECT !</a>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#create a').click(function(e){
+                e.preventDefault();
+                $('#formaddproject').submit();
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,457 @@
+/* Mehdi */
+
+#realcounterparts
+{
+    width:30%;
+    display:inline-block;
+    float:right;
+}
+
+#contentcounterpart
+{
+    width:100%;
+}
+
+#contentarticle
+{
+    width:70%;
+    display:inline-block;
+    margin-left:0;
+    margin-right:0;
+}
+
+#contentproject
+{
+    display:inline-block;
+    height:auto !important;
+}
+
+.commentcreator
+{
+    background-color:#28292A;
+}
+
+/*#etoil*/
+/*{*/
+/*width:30px;*/
+/*height:30px;*/
+/*position:relative;*/
+/*top:-50px;*/
+/*left:20px;*/
+/*z-index:666;*/
+/*}*/
+
+.articleparagraph:nth-child(odd) .commentprofil
+{
+    float:right;
+}
+
+.articleparagraph:nth-child(odd) #etoil
+{
+    width:30px;
+    height:30px;
+    position:relative;
+    top:-50px;
+    right:30px;
+    z-index:666;
+    float:right
+}
+
+.articleparagraph:nth-child(even) .commentprofil
+{
+    float: left;
+}
+
+.articleparagraph:nth-child(even) #etoil
+{
+    width:30px;
+    height:30px;
+    position:relative;
+    top:-50px;
+    left:20px;
+    z-index:666;
+}
+
+.donatorsblock
+{
+    width:100%;
+}
+
+.donatorsblock p
+{
+    margin-left:25px;
+}
+
+#totaldonator
+{
+    width:500px;
+    margin:auto;
+    text-align:center;
+    position:relative;
+}
+
+.sizeform
+{
+    width:560px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.form-horizontal .form-group {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.inputmehdi
+{
+    box-sizing: border-box;
+    border: none;
+    border-radius: 1px;
+    outline-color: rgb(116,214,136);
+    padding: 6px;
+}
+
+.titleformmehdi
+{
+    width: 30%;
+    display: inline-block;
+    text-align: right;
+    height: 40px;
+    line-height: 40px;
+    font-weight: 300;
+    color: rgb(21,22,23);
+    font-size: 14px;
+    vertical-align: middle;
+    font-family: 'Roboto',sans-serif;
+}
+
+.parentsubmit
+{
+    width:560px;
+    height:40px;
+    margin-bottom:20px;
+}
+
+#commentblock
+{
+    width:100%;
+}
+
+.commentcontent p
+{
+    max-width:100%;
+    min-height:25px;
+    word-wrap: break-word;
+}
+
+.commentcontent
+{
+    margin:auto;
+    height:160px;
+    width:60%
+}
+
+
+#topproject
+{
+    background:none;
+}
+
+.infoarticle p
+{
+    word-wrap:break-word;
+}
+
+.articleparagraph
+{
+    word-wrap:break-word;
+    line-height: 24px;
+}
+
+#contentpage form p
+{
+    width:30%;
+    display:inline-block;
+    text-align: right;
+    height:40px;
+    line-height:40px;
+    font-weight:300;
+    color:rgb(21,22,23);
+    font-size:14px;
+    vertical-align:middle;
+}
+
+#postcom
+{
+    width:100%;
+    display:inline-block;
+    text-align: center;
+    height:40px;
+    font-weight:300;
+    color:rgb(255,255,255);
+    font-size:14px;
+    box-sizing: border-box;
+    right:10px;
+    bottom:0px;
+    background: rgb(116,214,136);
+    cursor:pointer;
+}
+
+#postcom a
+{
+    text-decoration: none;
+    color:grey;
+}
+
+.deledit
+{
+    width:50%;
+    display:inline-block;
+    text-align: center;
+    height:40px;
+    font-weight:300;
+    color:rgb(255,255,255);
+    font-size:14px;
+    box-sizing: border-box;
+    right:10px;
+    bottom:0px;
+    background: rgb(116,214,136);
+    cursor:pointer;
+    float:left;
+}
+
+
+#sendnews
+{
+    width:100%;
+    display:inline-block;
+    text-align: center;
+    height:40px;
+    font-weight:300;
+    color:rgb(255,255,255);
+    font-size:14px;
+    box-sizing: border-box;
+    right:10px;
+    bottom:0px;
+    background: rgb(116,214,136);
+    cursor:pointer;
+}
+
+#sendnews a
+{
+    text-decoration: none;
+    color:grey;
+}
+
+.fourarticle a
+{
+    text-decoration:none;
+    color:grey;
+}
+
+.fourarticle p
+{
+    word-wrap:break-word;
+}
+
+.fourarticle
+{
+    max-width:450px;
+    margin:10px;
+}
+
+#morexp
+{
+    display:block;
+    text-align: center;
+    height:40px;
+    font-weight:300;
+    color:rgb(255,255,255);
+    font-size:14px;
+    box-sizing: border-box;
+    right:10px;
+    bottom:0px;
+    background: rgb(116,214,136);
+    cursor:pointer;
+}
+
+#morexp a
+{
+    display:inline-block;
+    margin:auto;
+    text-decoration: none;
+    height:15px;
+    margin-top:12px;
+    color:grey;
+}
+
+.resultitre
+{
+    font-family: 'Roboto',sans-serif;
+    color: rgb(51,52,53);
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 500;
+    text-align:center;
+}
+
+.found
+{
+    font-family:'Roboto', sans-serif;
+    color:rgb(51,52,53);
+    font-size:17px;
+    line-height:24px;
+    font-weight:900;
+    text-align: center;
+}
+
+#contentfound
+{
+    width:95%;
+    margin:auto;
+}
+
+.projectpreviewtxt a
+{
+    text-decoration: none;
+    color:rgb(51,52,53);
+}
+
+#likeproj
+{
+    display: inline-block;
+    width: 95px;
+    float: left;
+}
+
+#contribproj
+{
+    display: inline-block;
+    width: 95px;
+    float: left;
+}
+
+.projectpreview
+{
+    width:50%
+}
+
+.articleparagraphe
+{
+    width:100%;
+    height:250px;
+}
+
+#totalcomaff
+{
+    width:50%;
+    margin:auto;
+    display:block;
+}
+
+.commentprofil
+{
+    float:left;
+}
+
+.pes
+{
+    width: 100%;
+    background: rgb(162,214,142);
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
+
+#usercontenttxt
+{
+    display:inline-block;
+    position:relative;
+    margin:auto;
+    top:24px;
+    width:60%;
+}
+
+#usercontenttxt p
+{
+    position:absolute;
+    left:375px;
+    top:35px;
+    width:auto;
+    text-align: left;
+}
+
+#usercontenttxt p:last-child {
+    top:120px;
+}
+
+.photoprofilgrand
+{
+    width: 250px;
+    height: 250px;
+    border-radius: 150px;
+    border: 4px solid rgb(116,214,136);
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    background: pink;
+    margin-bottom: 20px;
+    float:left;
+}
+
+#centeruser
+{
+    width:100%;
+    height:350px;
+    position:relative;
+    margin:auto;
+    display: inline-block;
+}
+
+#centeruser h1
+{
+    width:90%;
+    margin:auto;
+    text-align:right;
+    padding-right:20px;
+}
+
+#goaluser
+{
+    width:60%;
+    margin:auto;
+    position:absolute;
+    right:75px;
+}
+
+.serr
+{
+    display:block;
+    margin:auto;
+}
+
+.icnt
+{
+    text-align: center;
+}
+
+#userrank {
+    right:70px;
+    position: absolute;
+    bottom:88px;
+}
+
+#userrank p {
+    position:relative !important;
+    text-align: center !important;
+    left:0px !important;
+
+}
+
+.azer {
+    font-family:Roboto, sans-serif;
+    font-style:italic;
+    font-size:14px;
+    text-transform: uppercase;
+    color:rgb(175,175,175);
+}

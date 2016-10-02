@@ -1,0 +1,46 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block body %}
+
+    {% for message in app.session.flashbag.get('info') %}
+        <p>Message flash : {{ message }}</p>
+    {% endfor %}
+
+    {% if user.coverPicture is not null %}
+        <div>
+            <img src="{{ asset(user.coverPicture.getWebPath) }}" alt="Cover picture - {{ user.username }}" width="250" />
+        </div>
+    {% endif %}
+
+    {% if user.profilePicture is not null %}
+        <div>
+            <img src="{{ asset(user.profilePicture.getWebPath) }}" alt="Profile picture - {{ user.username }}" width="250" />
+        </div>
+    {% endif %}
+
+    <h1>{{ user.username }}</h1>
+
+    <h2>{% if user.firstname is not null %}{{ user.firstname }}{% endif %} {% if user.name is not null %}{{ user.name }}{% endif %}</h2>
+
+    {% if user.country is not null %}
+        <h6>{{ user.country }}</h6>
+    {% endif %}
+
+    <p>Lvl {{ user.level }} - XP : {{ user.experience }}</p>
+    <p>Rank : {{ user.rank.name }}</p>
+
+    {% if user.smallDescription is not null %}
+        <i>{{ user.smallDescription }}</i>
+    {% endif %}
+
+    <h2>Ma description</h2>
+    {% if user.bigDescription is not null %}
+        <p>{{ user.bigDescription }}</p>
+    {% endif %}
+    <hr>
+    <ul>
+        {% if user.facebook is not null %}<li>{{ user.facebook }}</li>{% endif %}
+        {% if user.twitter is not null %}<li>{{ user.twitter }}</li>{% endif %}
+        {% if user.website is not null %}<li>{{ user.website }}</li>{% endif %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}Users - {{ parent() }}{% endblock %}
+
+{% block body %}
+    {% for message in app.session.flashbag.get('info') %}
+        <p>Message flash : {{ message }}</p>
+    {% endfor %}
+
+    <h1>Ranking</h1>
+
+    {% if is_granted('ROLE_USER') %}
+        <div class="well">
+            <h2><a href="{{ path('pickl_app_user_view', {'username': app.user.username}) }}" alt="{{ app.user.username }}">{{ app.user.username }}</a></h2>
+            <p>{{ app.user.experience }}</p>
+            <p>Lvl.{{ app.user.level }}</p>
+            <p>{{ app.user.rank.name }}</p>
+            <b>{{ app.user.username }}</b>
+            <p>{{ app.user.email }}</p>
+        </div>
+    {% endif %}
+
+    {% for user in users %}
+        <div class="well">
+            <h2><a href="{{ path('pickl_app_user_view', {'username': user.user.username}) }}" alt="{{ user.user.username }}">{{ user.user.username }}</a></h2>
+            <p>{{ user.user.experience }}</p>
+            <p>Lvl.{{ user.user.level }}</p>
+            <p>{{ user.user.rank.name }}</p>
+            <b>{{ user.user.username }}</b>
+            <p>{{ user.user.email }}</p>
+        </div>
+    {% endfor %}
+
+    <a href="{{ path('pickl_app_ranking', {'limit':(limit+25)}) }}">More</a>
+{% endblock %}

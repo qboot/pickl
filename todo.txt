@@ -1,0 +1,35 @@
+# automatiquement ajouter a la requete tous les objets liés à l'objet
+fetch="EAGER"
+
+# Penser a charger le php_fileinfo dans le php.ini
+
+# Penser a allow en 777 tous le dossier web uploads
+
+# Changer toutes les vues de FOSUserBundle
+
+# mail pour création d'un projet et finalisation
+
+# ajouter pour chaque champ (commentaire, petite et grande description projet/profil) un compteur de mots en JS
+# faciliter l'insertion de bonnes données par l'user en le renseignant sur les conditions des champs (min 50 caracteres etc)
+
+# supprimer son compte
+
+# message flash pour modif mot de passe
+
+# rang admin
+
+-----------------
+IMPORTANT
+verif newsletter
+page explore en back
+intégration
+fixtures load category and load rank a faire
+
+
+
+IMPORTANT VERIF NEWSLETTER
+IMPORTANT TEXTE ADMIN
+TESTER LE SITE EN ANONYME VISITE DU PROJET
+form news/comment dans view projet
+profil user
+changer login listener pour rediriger vers la page précédente

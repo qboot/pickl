@@ -1,0 +1,82 @@
+services:
+    pickl_app.doctrine_listener.user_creation:
+      class: Pickl\AppBundle\DoctrineListener\UserCreationListener
+      tags:
+        - { name: doctrine.event_listener, event: prePersist }
+        - { name: doctrine.event_listener, event: preUpdate }
+
+    pickl_app.doctrine_listener.project_edition:
+          class: Pickl\AppBundle\DoctrineListener\ProjectEditionListener
+          tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    pickl_app.doctrine_listener.project_creation:
+              class: Pickl\AppBundle\DoctrineListener\ProjectCreationListener
+              tags:
+                - { name: doctrine.event_listener, event: prePersist }
+
+    pickl_app.doctrine_listener.news_creation:
+                  class: Pickl\AppBundle\DoctrineListener\NewsCreationListener
+                  tags:
+                    - { name: doctrine.event_listener, event: prePersist }
+
+    pickl_app.doctrine_listener.project_loading:
+          class: Pickl\AppBundle\DoctrineListener\ProjectLoadingListener
+          tags:
+            - { name: doctrine.event_listener, event: postLoad }
+
+    pickl_app.image_type_extension:
+        class: Pickl\AppBundle\Form\Extension\ImageTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FileType }
+
+    pickl_app.doctrine_listener.contribution_creation:
+          class: Pickl\AppBundle\DoctrineListener\ContributionCreationListener
+          arguments: ['@service_container']
+          tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
+    pickl_app.search:
+          class: Pickl\AppBundle\Service\PicklSearch
+
+    pickl_app.activities:
+          class: Pickl\AppBundle\Service\PicklActivities
+          arguments: ['@service_container']
+
+    pickl_app.of_the_day:
+              class: Pickl\AppBundle\Service\PicklOfTheDay
+              arguments: ['@service_container']
+
+    pickl_app.percentage:
+                  class: Pickl\AppBundle\Service\PicklPercentage
+                  arguments: ['@service_container']
+
+    pickl_app.tokens.action_listener:
+        class: Pickl\AppBundle\EventListener\RewardsListener
+        arguments: ['@router', '@service_container', '@request_stack']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    pickl_app.doctrine_listener.rank_edition:
+              class: Pickl\AppBundle\DoctrineListener\RankEditionListener
+              arguments: ['@service_container']
+              tags:
+                - { name: doctrine.event_listener, event: postUpdate }
+
+    pickl_app.login:
+              class: Pickl\AppBundle\EventListener\LoginListener
+              arguments: ['@service_container']
+              tags:
+                  - { name: kernel.event_subscriber }
+              calls:
+                  - [setRequest, ['@request_stack']]
+
+    twig.extension.text:
+                  class: Twig_Extensions_Extension_Text
+                  tags:
+                    - { name: twig.extension }
+
+    pickl_app.twig.country_extension:
+        class: Pickl\AppBundle\Twig\CountryExtension
+        tags:
+            - { name: twig.extension }

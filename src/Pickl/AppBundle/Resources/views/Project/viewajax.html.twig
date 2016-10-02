@@ -1,0 +1,39 @@
+<div id="articletitle">
+    <h2>{{ project.title }}</h2>
+    <h3>#{{ project.category.name }}</h3>
+    <div class="like">
+        <a href="{{ path('pickl_app_project_add_like', {'slug': project.slug }) }}">
+            <img id="likefav"
+                    {% for like in app.user.favorites %}
+                        {% if like.project == project %}
+                            src="{{ asset('assets/icon/heart.png') }}"
+                        {% else %}
+                            src="{{ asset('assets/icon/heart2.png') }}"
+                        {% endif %}
+                    {% endfor %}
+            /></a>
+        <br><p>{{ project.favorites|length }}</p>
+    </div>
+</div>
+</div>
+<div class="articleparagraph">
+    <p>{{ project.smallDescription }}</p>
+</div>
+
+<div class="articlegoalbar">
+    <div class="left commentgoalbar"><p><strong>{{ project.contributions|length }} contributors</strong></p></div><div class="right commentgoalbar"><p>{{ project.remainingTime }} left</p></div>
+    <div class="projectgoalbar"><div class="goalbarload" style="width:{{ project.percent }}%;max-width:100%;"></div></div>
+    <div class="left commentgoalbar"><p><strong>${{ project.collectedAmount }}</strong></p></div><div class="right commentgoalbar"><p>{{ project.percent }}% of ${{ project.requestedAmount }}</p></div>
+</div>
+
+
+<div class="articleparagraph">
+    <div>{{ project.bigDescription }}</div>
+</div>
+
+
+<div class="articlegoalbar">
+    <div class="left commentgoalbar"><a href="{{ project.slug }}/report"><button id="report">REPORT</button></a></div><div class="right commentgoalbar">
+        {% for tag in project.tags %}<a href="../search?q={{ tag.word }}"><button>{{ tag.word }}</button></a>{% endfor %}
+    </div>
+</div>

@@ -1,0 +1,57 @@
+{% extends 'PicklAppBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} – Explore{% endblock %}
+{% block topproject %}
+    <div id="topproject" class="top" style="background:url('{{ asset('assets/img/explore.jpg') }}') no-repeat center top fixed;background-size:cover;">
+    </div>
+    <div id="contenttitle">
+        <h1>EXPLORE</h1>
+    </div>
+{% endblock %}
+{% block body %}
+
+    <div class="trend" style="padding-left:30px; padding-bottom:30px !important;">
+        <h2>ALL PROJECTS //</h2>
+        <div class="sep"></div>
+    </div>
+
+    {% if projects is empty %}
+
+        <div class="specialInfoCat">
+            <h5>No project found :(</h5>
+            <a href="{{ path('pickl_app_project_add') }}">Why not create yours now ?</a>
+            <a href="{{ path('pickl_app_explore') }}">Let's explore some others amazing projects !</a>
+        </div>
+
+    {% else %}
+
+        <table class="contentcat">
+            <tr style="height:0 !important;"><td></td><td></td><td></td></tr>
+            <tr>
+            {% for project in projects %}
+                {% if loop.index0 is divisible by(3) %}
+                    </tr><tr>
+                {% endif %}
+                <td style="width:33% !important; padding-bottom:150px !important;">
+                    <div class="catImg" style="background:url({{ asset(project.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                        <a href="{{ path('pickl_app_project_view', {'slug':project.slug}) }}"></a>
+                    </div>
+                    <div class="catContent">
+                        <h3>
+                            <a href="{{ path('pickl_app_project_view', {'slug':project.slug}) }}">
+                                {{ project.title }}
+                            </a>
+                        </h3>
+                        <quote>#{{ project.category.name }}</quote>
+                        <div class="catSmallDesc">{{ project.smallDescription|slice(0,80) }}...</div>
+                        <div class="percentBar">{{ project.percent }}%</div>
+                        <div class="goalbar"><div class="goalbarload" style="width:{{ project.percent }}%;max-width:100%;"></div></div>
+                        <div class="percentBar">{{ project.remainingTime }} left</div>
+                    </div>
+                </td>
+            {% endfor %}
+        </table>
+
+        <div id="loadmorenews" style="margin-bottom:100px;"><p><a href="{{ path('pickl_app_explore', {'limit':(limit+10)}) }}">+</a></p></div>
+
+    {% endif %}
+{% endblock %}

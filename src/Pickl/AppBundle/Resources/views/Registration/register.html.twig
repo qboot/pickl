@@ -1,0 +1,18 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – Register{% endblock %}
+
+{% block body %}
+
+{% include "PicklAppBundle:Registration:register_content.html.twig" %}
+
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+        <a href="{{ path('pickl_app_project_add') }}">CREATE YOUR OWN PROJECT !</a>
+    </div>
+{% endblock %}

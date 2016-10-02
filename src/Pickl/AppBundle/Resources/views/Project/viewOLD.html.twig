@@ -1,0 +1,193 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block body %}
+
+    {% for message in app.session.flashbag.get('info') %}
+        <p>Message flash : {{ message }}</p>
+    {% endfor %}
+    {% if app.user != null %}
+        {% if app.user.username == project.user.username or is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('pickl_app_project_edit', {'slug': project.slug}) }}" alt="Edit - {{ project.title }}">Edit this project</a><br/>
+            <a href="{{ path('pickl_app_news_add', {'slug': project.slug}) }}" alt="Write a news - {{ project.title }}">Write a news</a>
+        {% endif %}
+    {% endif %}
+    <h1>{{ project.title }}</h1>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <p><a href="{{ path('pickl_app_project_add_like', {'slug': project.slug}) }}" alt="Like - {{ project.title }}">Like</a></p>
+            <p><a href="{{ path('pickl_app_project_add_contribution', {'slug': project.slug}) }}" alt="Support - {{ project.title }}">Support</a></p>
+            <p><a href="{{ path('pickl_app_comment_add', {'slug': project.slug}) }}" alt="Comment - {{ project.title }}">Comment</a></p>
+        {% endif %}
+    <h2>{{ project.collectedAmount }} collectés sur {{ project.requestedAmount }}</h2>
+    <i>{{ project.smallDescription }}</i>
+    <p>{{ project.bigDescription }}</p>
+    <p>
+        {% for tag in project.tags %}
+        {{ tag.word }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p>
+        <img src="{{ asset(project.picture.getWebPath) }}" alt="Photo du projet - {{ project.title }}" width="250" />
+    </p>
+    <p>
+        Créateur du projet : {{ project.user.username }} / Grade du créateur : {{ project.user.rank.name }}
+    </p>
+    <p>
+        {% for contribution in project.contributions %}
+            // {{ contribution.amount }}&euro; - le {{ contribution.date|date('d/m/Y') }} <br/>
+        {% endfor %}
+    </p>
+
+    <div>
+        <h3>Counterparts</h3>
+        {% if project.counterparts is empty %}
+            {# si il n'y a pas de contrepartie on affiche une image par défaut #}
+        {% endif %}
+        {% for counterpart in project.counterparts %}
+            <h4>{{ counterpart.title }} - {{ counterpart.minAmount }}&euro;</h4> <br/>
+            <p>{{ counterpart.description }}</p>
+        {% endfor %}
+        <h3>Comments</h3>
+        {% for comment in project.comments %}
+            {% if comment.user.id == project.user.id %}<b>{% endif %}
+                Message de {{ comment.user.username }}
+            {% if comment.user.id == project.user.id %}</b>{% endif %}<br/>
+                <i>le {{ comment.date|date('d/m/Y') }}</i> <br/>
+
+                {% if app.user != null %}
+                    {% if comment.user.id == project.user.id %}<b>{% endif %}
+                        <p>{{ comment.message }}</p>
+                    {% if comment.user.id == project.user.id %}</b>{% endif %}
+
+                    {% if comment.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                        <p><a href="{{ path('pickl_app_comment_edit', {'slug': project.slug, 'id': comment.id}) }}" alt="Edit comment - {{ project.title }}">Edit</a></p>
+                        <p><a href="{{ path('pickl_app_comment_delete', {'slug': project.slug, 'id': comment.id}) }}" alt="Delete comment - {{ project.title }}">Delete</a></p>
+                    {% endif %}
+                {% endif %}
+                <hr/>
+        {% endfor %}
+        {% if project.news is not empty %}
+            <h3>News</h3>
+        {% endif %}
+        {% for news in project.news %}
+            <div>
+                <img src="{{ asset(news.picture.getWebpath) }}" alt="{{ news.title }}" width="200" />
+                <h4>{{ news.title }}</h4>
+                <p>{{ news.message }}</p>
+                {% if app.user != null %}
+                    {% if project.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                        <p><a href="{{ path('pickl_app_news_edit', {'slug': project.slug, 'id': news.id}) }}" alt="Edit news - {{ project.title }}">Edit</a></p>
+                        <p><a href="{{ path('pickl_app_news_delete', {'slug': project.slug, 'id': news.id}) }}" alt="Delete news - {{ project.title }}">Delete</a></p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% if contributors is not empty %}
+            <h3>Contributors</h3>
+        {% endif %}
+        {% for contributor in contributors %}
+            {{ contributor.username }} - {{ contributor.email }} <br/>
+        {% endfor %}
+
+
+
+
+
+
+
+        {% if is_granted("ROLE_USER") %}
+            <h1>Add a comment</h1>
+
+            <div class="well">
+
+                {{ form_start(formComment, {'attr': {'class': 'form-horizontal'}}) }}
+
+                {{ form_errors(formComment) }}
+
+                <div class="form-group">
+                    {{ form_label(formComment.message, "Message", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+                    {{ form_errors(formComment.message) }}
+
+                    <div class="col-sm-10">
+                        {{ form_widget(formComment.message, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                {{ form_rest(formComment) }}
+
+                {{ form_widget(formComment.comment, {'attr': {'class': 'btn btn-primary'}}) }}
+
+                {{ form_end(formComment) }}
+            </div>
+        {% endif %}
+
+
+        {% if app.user.username == project.user.username or is_granted('ROLE_ADMIN') %}
+            <h1>Add a news</h1>
+            <div class="well">
+
+                {% form_theme formNews 'PicklAppBundle:Form:fields.html.twig' %}
+
+                {{ form_start(formNews, {'attr': {'class': 'form-horizontal'}}) }}
+
+                {# Les erreurs générales du formulaire. #}
+                {{ form_errors(formNews) }}
+
+
+                <div class="form-group">
+                    {# Génération du label. #}
+                    {{ form_label(formNews.title, "Title", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+                    {# Affichage des erreurs pour ce champ précis. #}
+                    {{ form_errors(formNews.title) }}
+
+                    <div class="col-sm-10">
+                        {# Génération de l'input. #}
+                        {{ form_widget(formNews.title, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    {# Génération du label. #}
+                    {{ form_label(formNews.message, "Message", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+                    {# Affichage des erreurs pour ce champ précis. #}
+                    {{ form_errors(formNews.message) }}
+
+                    <div class="col-sm-10">
+                        {# Génération de l'input. #}
+                        {{ form_widget(formNews.message, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {# Génération du label. #}
+                    {{ form_label(formNews.picture, "Picture", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+                    {# Affichage des erreurs pour ce champ précis. #}
+                    {{ form_errors(formNews.picture) }}
+
+                    <div class="col-sm-10">
+                        {# Génération de l'input. #}
+
+                        {{ form_widget(formNews.picture) }}
+                    </div>
+                </div>
+
+                {# Génération automatique des champs pas encore écrits.
+                   Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                   et tous les champs cachés (type « hidden »). #}
+                {{ form_rest(formNews) }}
+
+                {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+                {{ form_widget(formNews.add, {'attr': {'class': 'btn btn-primary'}}) }}
+
+                {# Fermeture de la balise <form> du formulaire HTML #}
+                {{ form_end(formNews) }}
+            </div>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

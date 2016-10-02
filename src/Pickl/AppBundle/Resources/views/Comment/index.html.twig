@@ -1,0 +1,116 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}
+    {% if comment is defined %}
+        {{ parent() }} – Edit comment for {{ project.title }}
+    {% else %}
+        {{ parent() }} – Write comment for {{ project.title }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+
+    <div id="navtwo">
+        <div id="navprofil">
+            <div id="imgprofil"><img src="{{ asset(app.user.profilePicture.getWebPath) }}"/></div>
+            <p>Hi, {{ app.user.username }}!<br><a href="{{ path('pickl_app_user_edit') }}">EDIT MY PROFILE</a></p>
+        </div>
+        <ul>
+            <li class="activ" ><a href="{{ path('pickl_app_project_view',{'slug':project.slug}) }}">COME BACK TO PROJECT</a></li>
+            {% if comment is defined %}
+                <li><a href="#writenews">EDIT A COMMENT</a></li>
+            {% else %}
+                <li><a href="#writenews">WRITE A COMMENT</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+    <div id="content">
+        <div id="contentprofil">
+            <div id="compteimgtop">
+                <h1>Welcome !</h1>
+                <p>
+                    Here, you can find most of the information concerning your activities on Pickl. From a short
+                    summary of your level and the amount of experience you got until now to the latest projects
+                    you added to your Likes passing by all your different projects and contributions to the other’s
+                    projects.
+                </p>
+                <p>
+                    From here, you can edit your profile as well, by putting more precise information about you
+                    and changing your profile and cover photo to make it more personal.
+                </p>
+            </div>
+
+            <div id="activity" class="titleprofil">
+                {% if comment is defined %}
+                    <h2 id="writenews">EDIT A COMMENT</h2>
+                {% else %}
+                    <h2 id="writenews">WRITE A COMMENT</h2>
+                {% endif %}
+                <div class="sep"></div>
+            </div>
+
+            {% form_theme form 'PicklAppBundle:Form:fields.html.twig' %}
+
+            {{ form_start(form, {'attr': {'id': 'formaddproject'}}) }}
+
+            {# Les erreurs générales du formulaire. #}
+            {{ form_errors(form) }}
+            <ul>
+                <div class="sizeform">
+                    <li>
+                        <div style="position:relative;">
+                            {# Génération du label. #}
+                            <p>{{ form_label(form.message, "Message") }}</p>
+
+                            {# Affichage des erreurs pour ce champ précis. #}
+                            {% if not form.vars.valid %}
+                                {{ form_errors(form.message) }}
+                            {% else %}
+                                <ul>
+                                    <li>Should be between 5 and 255 characters</li>
+                                </ul>
+                            {% endif %}
+
+                            <div class="formdouble">
+                                <div class="textCount" data="255">0/255</div>
+                                {# Génération de l'input. #}
+
+                                {{ form_widget(form.message, {'attr': {'class': 'largeinput', 'rows': '20', 'cols':'50'}}) }}
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </ul>
+            <!-- fin du form -->
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ asset('js/formCounterparts.js') }}"></script>
+{% endblock %}
+
+{% block sponsors %}
+    <div id="sponsorscontent">
+    </div>
+
+    <div id="create">
+        {% if comment is defined %}
+            <a href="#">EDIT THIS COMMENT !</a>
+        {% else %}
+            <a href="#">SEND THIS COMMENT !</a>
+        {% endif %}
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#create a').click(function(e){
+                e.preventDefault();
+                $('#formaddproject').submit();
+            });
+        });
+    </script>
+{% endblock %}

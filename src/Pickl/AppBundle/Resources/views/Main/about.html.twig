@@ -1,0 +1,90 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – About{% endblock %}
+
+{% block body %}
+
+<div id="topabout" class="top">
+    <div class="containtoptitle">
+        <h1>ABOUT US</h1><br>
+        <p>Learn more about our team.</p>
+    </div>
+</div>
+<div id="content" class="howitcontent">
+    <div id="aboutcontent">
+
+        <div class="articleparagraphcenter">
+            <h2>OUR STORY</h2>
+            <p>
+                Pickl is born in 2009 in South Africa and more precisely in his capital city, Johannesburg,
+                from the idea of Graeme Smith and his associate Jan van Riebeeck. At its beginnings, the
+                team was only composed of 12 peoples, mainly developers and designers. The team name
+                was then Flamingo.
+            </p>
+            <p>
+                So many things happened since then! We now have offices in New York, Milan, Berlin and
+                Stockholm and we count more than 125 employees.
+            </p>
+            <p>
+                We still try to improve your experience on Pickl by working hard every day since the
+                beginning, on each aspect of the site. We are all passionate and 100% invested in our tasks.
+            </p>
+        </div>
+
+        <div id="teamcontainer">
+            <div id="teamtitle"><h2>HOW IT WORKS<br>FAQ</h2></div>
+            <div id="teambloccontainer">
+                <div class="teambloc">
+                    <span>PROJECT CREATOR'S OPINION</span>
+                    <div class="teamimg"><img src="{{ asset('assets/img/team1.jpg') }}"/></div>
+                    <p>“Pickl is revolutionizing traditional crowdfunding methods by offering the opportunity to
+                        present your project to the public directly, which actually makes you the real master of it”.</p>
+                    <quote>John Doe</quote>
+                </div><!--
+                --><div class="teambloc blocright">
+                    <span>CONTRIBUTOR'S OPINION</span>
+                    <div class="teamimg"><img src="{{ asset('assets/img/team2.jpg') }}"/></div>
+                    <p>“I have contributed to more than 30 projects throughout the different categories on Pickl and
+                        I have never have been disappointed by any of these projects. I really feel invested when I
+                        contribute.”</p>
+                    <quote>Jane Doe</quote>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="articleparagraph">
+            <h2>OUR TEAM</h2>
+            <p>Since our beginnings, we have constantly evolved, by setting up offices in many cities of the
+                world. We are now a big family, composed of 125 employees from all around the world. We
+                enjoy to support you, giving life to your ideas.</p>
+            <p>
+                In Pickl, we have many roles: developers, graphic designers, lawyers, community managers
+                etc.
+            </p>
+            <p>
+                We know that, if we are here today, it is thanks to you. We wouldn’t be what we are without
+                your incredible contributions. Thanks to you and we are happy to have you with us in this
+                wonderful community.
+            </p>
+        </div>
+        <div class="aboutimg">
+        </div>
+
+        <div class="articleparagraph">
+            <h2>PICKL IN FEW NUMBERS</h2>
+        </div>
+
+        <div class="bignumber">
+            <div class="pairnumber">
+                <div class="numbercontent"><h3><strong>700 000</strong><br>VISITORS EACH DAY</h3></div><!--
+                    --><div class="numbercontent"><h3><strong>68%</strong><br>OF PROJECTS REACH THEIR GOAL</h3></div>
+            </div>
+            <div class="pairnumber">
+                <div class="numbercontent"><h3><strong>14 MINUTES</strong><br>THE FASTEST FINANCED PROJECT</h3></div><!--
+                    --><div class="numbercontent"><h3><strong>3 WEEKS</strong><br>OF DEVELOPMENT FOR PICKL</h3></div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

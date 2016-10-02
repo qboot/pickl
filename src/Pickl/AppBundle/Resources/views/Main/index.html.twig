@@ -1,0 +1,144 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }}{% endblock %}
+
+{% block body %}
+
+
+    <div id="topaccueil" class="top">
+        <div class="containtoptitle">
+            <h1>CHARITY AND CROWDFUNDING</h1>
+        </div>
+    </div>
+    <div id="content">
+        <div id="projectoftheday">
+            <h2>PROJECT OF THE DAY</h2>
+            <div class="sep"></div>
+            <div class="imgarticle" style="background:url({{ asset(ofTheDay.entity.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                <a href="{{ path('pickl_app_project_view', {'slug':ofTheDay.entity.slug}) }}"></a>
+            </div>
+            <div class="infoarticle">
+                <h3>{{ ofTheDay.entity.title }}</h3>
+                <quote>Category : {{ ofTheDay.entity.category.name }}</quote>
+                <div class="percentBarOfTheDay">{{ ofTheDay.entity.percent }}%</div>
+                <div class="goalbar"><div class="goalbarload" style="width:{{ ofTheDay.entity.percent }}%;max-width:100%;"></div></div>
+                <div class="percentBarOfTheDay">&dollar;{{  ofTheDay.sum }} collected in the last 24h</div>
+                <p>{{ ofTheDay.entity.smallDescription }}</p></div>
+        </div>
+
+
+
+        <div class="trend">
+            <h2>TRENDS</h2>
+            <div class="sep"></div>
+            <div class="contentarticle">
+                <div class="imgarticle" style="background:url({{ asset(trends.0.entity.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                    <a href="{{ path('pickl_app_project_view',{'slug':trends.0.entity.slug}) }}"></a>
+                </div>
+                <div class="infoarticle">
+                    <h3>{{ trends.0.entity.title }}</h3>
+                    <quote>{{ trends.0.entity.category.name }}</quote>
+                    <p>{{ trends.0.entity.smallDescription }}</p>
+                    <div class="percentBar">{{ trends.0.entity.percent }}%</div>
+                    <div class="goalbar"><div class="goalbarload" style="width:{{ trends.0.entity.percent }}%;max-width:100%;"></div></div>
+                    <div class="percentBar">{{ trends.0.entity.remainingTime }} left</div>
+                </div>
+            </div>
+
+            <div class="contentarticle">
+                <div class="imgarticle" style="background:url({{ asset(trends.1.entity.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                    <a href="{{ path('pickl_app_project_view',{'slug':trends.1.entity.slug}) }}"></a>
+                </div>
+                <div class="infoarticle">
+                    <h3>{{ trends.1.entity.title }}</h3>
+                    <quote>{{ trends.1.entity.category.name }}</quote>
+                    <p>{{ trends.1.entity.smallDescription }}</p>
+                    <div class="percentBar">{{ trends.1.entity.percent }}%</div>
+                    <div class="goalbar"><div class="goalbarload" style="width:{{ trends.1.entity.percent }}%;max-width:100%;"></div></div>
+                    <div class="percentBar">{{ trends.1.entity.remainingTime }} left</div>
+                </div>
+            </div>
+
+            <div class="contentarticle">
+                <div class="imgarticle" style="background:url({{ asset(trends.2.entity.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                    <a href="{{ path('pickl_app_project_view',{'slug':trends.2.entity.slug}) }}"></a>
+                </div>
+                <div class="infoarticle">
+                    <h3>{{ trends.2.entity.title }}</h3>
+                    <quote>{{ trends.2.entity.category.name }}</quote>
+                    <p>{{ trends.2.entity.smallDescription }}</p>
+                    <div class="percentBar">{{ trends.2.entity.percent }}%</div>
+                    <div class="goalbar"><div class="goalbarload" style="width:{{ trends.2.entity.percent }}%;max-width:100%;"></div></div>
+                    <div class="percentBar">{{ trends.2.entity.remainingTime }} left</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="categories">
+            <div class="titlecontainer">
+                <h2>CATEGORIES</h2>
+            </div>
+            <div id="categoriescontainer">
+                <div class="rowcategorie">
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.0.slug}) }}"><div class="hovercat"><h4>{{ categories.0.name }}</h4></div><img src="{{ asset(categories.0.picture.getCatWebPath) }}"/></a></div>
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.1.slug}) }}"><div class="hovercat"><h4>{{ categories.1.name }}</h4></div><img src="{{ asset(categories.1.picture.getCatWebPath) }}"/></a></div>
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.2.slug}) }}"><div class="hovercat"><h4>{{ categories.2.name }}</h4></div><img src="{{ asset(categories.2.picture.getCatWebPath) }}"/></a></div>
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.3.slug}) }}"><div class="hovercat"><h4>{{ categories.3.name }}</h4></div><img src="{{ asset(categories.3.picture.getCatWebPath) }}"/></a></div>
+                </div>
+                <div class="rowcategorie">
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.4.slug}) }}"><div class="hovercat"><h4>{{ categories.4.name }}</h4></div><img src="{{ asset(categories.4.picture.getCatWebPath) }}"/></a></div>
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.5.slug}) }}"><div class="hovercat"><h4>{{ categories.5.name }}</h4></div><img src="{{ asset(categories.5.picture.getCatWebPath) }}"/></a></div>
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.6.slug}) }}"><div class="hovercat"><h4>{{ categories.6.name }}</h4></div><img src="{{ asset(categories.6.picture.getCatWebPath) }}"/></a></div>
+                    <div class="categorie"><a href="{{ path('pickl_app_category',{'slug':categories.7.slug}) }}"><div class="hovercat"><h4>{{ categories.7.name }}</h4></div><img src="{{ asset(categories.7.picture.getCatWebPath) }}"/></a></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="trend">
+            <h2>RECENTLY PUBLISHED</h2>
+            <div class="sep"></div>
+            <div class="contentarticle">
+                <div class="imgarticle" style="background:url({{ asset(projects.0.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                    <a href="{{ path('pickl_app_project_view',{'slug':projects.0.slug}) }}"></a>
+                </div>
+                <div class="infoarticle">
+                    <h3>{{ projects.0.title }}</h3>
+                    <quote>{{ projects.0.category.name }}</quote>
+                    <p>{{ projects.0.smallDescription }}</p>
+                    <div class="percentBar">{{ projects.0.percent }}%</div>
+                    <div class="goalbar"><div class="goalbarload" style="width:{{ projects.0.percent }}%;max-width:100%;"></div></div>
+                    <div class="percentBar">{{ projects.0.remainingTime }} left</div>
+                </div>
+            </div>
+
+            <div class="contentarticle">
+                <div class="imgarticle" style="background:url({{ asset(projects.1.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                    <a href="{{ path('pickl_app_project_view',{'slug':projects.1.slug}) }}"></a>
+                </div>
+                <div class="infoarticle">
+                    <h3>{{ projects.1.title }}</h3>
+                    <quote>{{ projects.1.category.name }}</quote>
+                    <p>{{ projects.1.smallDescription }}</p>
+                    <div class="percentBar">{{ projects.1.percent }}%</div>
+                    <div class="goalbar"><div class="goalbarload" style="width:{{ projects.1.percent }}%;max-width:100%;"></div></div>
+                    <div class="percentBar">{{ projects.1.remainingTime }} left</div>
+                </div>
+            </div>
+
+            <div class="contentarticle">
+                <div class="imgarticle" style="background:url({{ asset(projects.2.picture.getWebPath) }}) no-repeat center;background-size: cover;">
+                    <a href="{{ path('pickl_app_project_view',{'slug':projects.2.slug}) }}"></a>
+                </div>
+                <div class="infoarticle">
+                    <h3>{{ projects.2.title }}</h3>
+                    <quote>{{ projects.2.category.name }}</quote>
+                    <p>{{ projects.2.smallDescription }}</p>
+                    <div class="percentBar">{{ projects.2.percent }}%</div>
+                    <div class="goalbar"><div class="goalbarload" style="width:{{ projects.2.percent }}%;max-width:100%;"></div></div>
+                    <div class="percentBar">{{ projects.2.remainingTime }} left</div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

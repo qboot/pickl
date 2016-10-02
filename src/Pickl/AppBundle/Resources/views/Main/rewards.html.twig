@@ -1,0 +1,61 @@
+{% extends "PicklAppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} – Rewards{% endblock %}
+
+{% block body %}
+
+<div id="content" class="rewardscontent">
+    <div id="rewardbackground">
+
+        <div class="articleparagraph">
+            <h2>REWARDS</h2>
+            <img src="{{ asset('assets/img/reward/rewards.png') }}"/>
+            <p>
+                The rewards allow you to get experience throughout different activities. Their main utility is to
+                help you getting more experience.
+            </p>
+        </div>
+
+        <div id="logocontainer">
+            {% for reward in rewards %}
+                <div class="logosolo">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {% if app.user.hasReward(reward.id) %}
+                            <img src="{{ asset(reward.icon.rewardWebPath) }}"/>
+                            <p>{{ reward.name }}</p>
+                        {% else %}
+                            <img class="rewardLight" src="{{ asset(reward.icon.rewardWebPath) }}"/>
+                            <p class="rewardLight">{{ reward.name }}</p>
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ asset(reward.icon.rewardWebPath) }}"/>
+                        <p>{{ reward.name }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="articleparagraph">
+            <h2>AWARDS</h2>
+            <img src="{{ asset('assets/img/reward/awards.png') }}"/>
+            <p>
+                The awards are the proof that Pickl and his community can make big things together!
+            </p>
+        </div>
+
+
+
+        <div class="bignumber">
+            <div class="pairnumber">
+                <div class="numbercontent"><h3><strong>${{ totalAmount }}</strong><br>RECOLTED. THANKS!</h3></div><!--
+                    --><div class="numbercontent"><h3><strong>{{ bestPercentage }}%</strong><br>BIGGEST PERCENTAGE</h3></div>
+            </div>
+            <div class="pairnumber">
+                <div class="numbercontent"><h3><strong>{{ nbComments }}</strong><br>COMMENTS POSTED</h3></div><!--
+                    --><div class="numbercontent"><h3><strong>{{ nbProjects }}</strong><br>PROJECTS CREATED</h3></div>
+            </div>
+        </div>
+
+    </div>
+
+    {% endblock %}
