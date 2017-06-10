@@ -188,7 +188,7 @@ class Project
     private $favorites;
 
     /**
-     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Counterpart", cascade={"persist"}, mappedBy="project")
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Counterpart", cascade={"persist","remove"}, mappedBy="project")
      * @Assert\Valid
      */
     private $counterparts;

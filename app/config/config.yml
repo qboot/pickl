@@ -76,6 +76,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Pickl\AppBundle\Entity\User
+    from_email:
+        address: hello@quentinbrunet.com
+        sender_name: Quentin Brunet
 
 # DoctrineExtensionsBundle Configuration
 stof_doctrine_extensions:

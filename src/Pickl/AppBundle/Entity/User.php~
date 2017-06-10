@@ -114,17 +114,17 @@ class User extends BaseUser
     private $rewards;
 
     /**
-     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Contribution", mappedBy="user", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Contribution", mappedBy="user", cascade={"remove"}, fetch="EAGER")
      */
     private $contributions;
 
     /**
-     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Comment", mappedBy="user", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Comment", mappedBy="user", cascade={"remove"}, fetch="EAGER")
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Favorite", mappedBy="user", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Pickl\AppBundle\Entity\Favorite", mappedBy="user", cascade={"remove"}, fetch="EAGER")
      */
     private $favorites;
 
